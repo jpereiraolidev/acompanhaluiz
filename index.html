@@ -1,67 +1,146 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="theme-color" content="#0a0a0f">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
- <link rel="icon" type="image/png" href="capa.png">
- <!-- Favicon para navegadores no PC -->
+  <link rel="icon" type="image/png" href="capa.png">
   <link rel="icon" type="image/x-icon" href="capa.png">
-
-  <!-- Tela de Início no iPhone/iPad -->
   <link rel="apple-touch-icon" href="capa.png">
-
-  <!-- Tela de Início no Android -->
-  <link rel="icon" type="image/png" sizes="192x192" href="capa.png">
   <title>Diário · Acompanhamento</title>
-  
+
   <script src="https://unpkg.com/lucide@latest"></script>
-  
+
   <style>
     /* ============================================================
-       DESIGN SYSTEM — dark premium, estilo app de notas
+       DESIGN SYSTEM — 3 temas: dark, light, glass
        ============================================================ */
     :root {
+      --radius: 16px;
+      --radius-sm: 10px;
+      --radius-lg: 24px;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+
+      /* Cores fixas (marca) */
+      --primary: #8b5cf6;
+      --primary-light: #a78bfa;
+      --primary-dark: #7c3aed;
+      --primary-glow: rgba(139, 92, 246, 0.25);
+
+      --gold: #f5c542;
+      --gold-dark: #d4a017;
+
+      --success: #22c55e;
+      --warn: #f59e0b;
+      --danger: #ef4444;
+      --info: #38bdf8;
+    }
+
+    /* ---------------- TEMA DARK (padrão) ---------------- */
+    html[data-theme="dark"] {
       --bg: #0a0a0f;
       --bg-2: #12121a;
       --card: #16161f;
       --card-hover: #1c1c28;
       --border: #262633;
       --border-soft: #1f1f2b;
-      
-      --primary: #8b5cf6;
-      --primary-light: #a78bfa;
-      --primary-dark: #7c3aed;
-      --primary-glow: rgba(139, 92, 246, 0.25);
-      
-      --gold: #f5c542;
-      --gold-dark: #d4a017;
-      
       --text: #f5f5f7;
       --text-2: #b8b8c8;
       --text-3: #6b6b7e;
-      
-      --success: #22c55e;
-      --warn: #f59e0b;
-      --danger: #ef4444;
-      --info: #38bdf8;
-      
-      --radius: 16px;
-      --radius-sm: 10px;
-      --radius-lg: 24px;
-      
-      --safe-top: env(safe-area-inset-top, 0px);
-      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --header-bg: rgba(10, 10, 15, 0.85);
+      --nav-bg: rgba(18, 18, 26, 0.92);
+      --input-bg: #0a0a0f;
+      --backdrop: rgba(0, 0, 0, 0.6);
+      --shadow-card: 0 1px 3px rgba(0,0,0,0.3);
     }
-    
+
+    /* ---------------- TEMA LIGHT ---------------- */
+    html[data-theme="light"] {
+      --bg: #f5f5f7;
+      --bg-2: #ebebef;
+      --card: #ffffff;
+      --card-hover: #f0f0f4;
+      --border: #d4d4dc;
+      --border-soft: #e4e4ea;
+      --text: #0f0f14;
+      --text-2: #4a4a58;
+      --text-3: #8a8a98;
+      --header-bg: rgba(245, 245, 247, 0.85);
+      --nav-bg: rgba(255, 255, 255, 0.92);
+      --input-bg: #f0f0f4;
+      --backdrop: rgba(0, 0, 0, 0.35);
+      --shadow-card: 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    /* ---------------- TEMA LIQUID GLASS ---------------- */
+    html[data-theme="glass"] {
+      --bg: #0b0b14;
+      --bg-2: rgba(255, 255, 255, 0.03);
+      --card: rgba(255, 255, 255, 0.06);
+      --card-hover: rgba(255, 255, 255, 0.10);
+      --border: rgba(255, 255, 255, 0.12);
+      --border-soft: rgba(255, 255, 255, 0.07);
+      --text: #ffffff;
+      --text-2: rgba(255, 255, 255, 0.75);
+      --text-3: rgba(255, 255, 255, 0.45);
+      --header-bg: rgba(11, 11, 20, 0.55);
+      --nav-bg: rgba(20, 20, 32, 0.55);
+      --input-bg: rgba(255, 255, 255, 0.05);
+      --backdrop: rgba(0, 0, 0, 0.5);
+      --shadow-card: 0 8px 32px rgba(0,0,0,0.25);
+    }
+
+    /* Fundo do Liquid Glass: gradiente animado + orbes */
+    html[data-theme="glass"] body::before,
+    html[data-theme="glass"] body::after {
+      content: '';
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.6;
+      pointer-events: none;
+      z-index: 0;
+    }
+    html[data-theme="glass"] body::before {
+      width: 420px; height: 420px;
+      top: -100px; left: -100px;
+      background: radial-gradient(circle, #8b5cf6 0%, transparent 70%);
+      animation: orbFloat 18s ease-in-out infinite;
+    }
+    html[data-theme="glass"] body::after {
+      width: 380px; height: 380px;
+      bottom: 80px; right: -120px;
+      background: radial-gradient(circle, #38bdf8 0%, transparent 70%);
+      animation: orbFloat 22s ease-in-out infinite reverse;
+    }
+    @keyframes orbFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(40px, 30px) scale(1.15); }
+    }
+
+    /* Liquid glass: aplica blur em cards */
+    html[data-theme="glass"] .card,
+    html[data-theme="glass"] .note,
+    html[data-theme="glass"] .stat,
+    html[data-theme="glass"] .sheet,
+    html[data-theme="glass"] header,
+    html[data-theme="glass"] nav.tabs {
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      box-shadow:
+        0 8px 32px rgba(0,0,0,0.25),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+
     * {
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
       -webkit-font-smoothing: antialiased;
     }
-    
+
     html, body {
       margin: 0;
       padding: 0;
@@ -71,17 +150,31 @@
       font-size: 15px;
       line-height: 1.5;
       overscroll-behavior-y: none;
+      transition: background 0.4s ease, color 0.4s ease;
     }
-    
+
     body {
       padding-bottom: calc(84px + var(--safe-bottom));
       min-height: 100vh;
+      position: relative;
+    }
+
+    html[data-theme="dark"] body {
       background:
         radial-gradient(ellipse at top, rgba(139, 92, 246, 0.08) 0%, transparent 55%),
         radial-gradient(ellipse at bottom right, rgba(245, 197, 66, 0.04) 0%, transparent 50%),
         var(--bg);
     }
-    
+
+    html[data-theme="light"] body {
+      background:
+        radial-gradient(ellipse at top, rgba(139, 92, 246, 0.06) 0%, transparent 55%),
+        var(--bg);
+    }
+
+    html[data-theme="glass"] body { background: var(--bg); }
+    html[data-theme="glass"] main { position: relative; z-index: 1; }
+
     /* ============================================================
        HEADER
        ============================================================ */
@@ -90,135 +183,84 @@
       top: 0;
       z-index: 50;
       padding: calc(14px + var(--safe-top)) 16px 12px;
-      background: rgba(10, 10, 15, 0.85);
+      background: var(--header-bg);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border-soft);
+      transition: background 0.3s ease;
     }
-    
+
     .header-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
     }
-    
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 0;
-    }
-    
+
+    .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+
     .brand-icon {
-      width: 36px;
-      height: 36px;
+      width: 36px; height: 36px;
       border-radius: 11px;
       background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
       box-shadow: 0 4px 14px var(--primary-glow);
     }
-    
-    .brand-icon svg {
-      width: 19px;
-      height: 19px;
-      stroke: #fff;
-      stroke-width: 2.2;
-    }
-    
+    .brand-icon svg { width: 19px; height: 19px; stroke: #fff; stroke-width: 2.2; }
+
     .brand-text h1 {
-      margin: 0;
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      white-space: nowrap;
+      margin: 0; font-size: 16px; font-weight: 700;
+      letter-spacing: -0.02em; white-space: nowrap;
     }
-    
     .brand-text p {
-      margin: 0;
-      font-size: 11px;
-      color: var(--text-3);
-      font-weight: 500;
+      margin: 0; font-size: 11px; color: var(--text-3); font-weight: 500;
     }
-    
+
+    .header-actions { display: flex; gap: 6px; }
+
     .header-btn {
-      width: 38px;
-      height: 38px;
+      width: 38px; height: 38px;
       border-radius: 11px;
       background: var(--card);
       border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       cursor: pointer;
       transition: all 0.15s;
       flex-shrink: 0;
     }
-    
-    .header-btn:active {
-      transform: scale(0.92);
-      background: var(--card-hover);
-    }
-    
-    .header-btn svg {
-      width: 18px;
-      height: 18px;
-      stroke: var(--text-2);
-      stroke-width: 2.2;
-    }
-    
+    .header-btn:active { transform: scale(0.92); background: var(--card-hover); }
+    .header-btn svg { width: 18px; height: 18px; stroke: var(--text-2); stroke-width: 2.2; }
+
     /* ============================================================
-       MAIN
+       MAIN / VIEWS
        ============================================================ */
-    main {
-      padding: 16px;
-      max-width: 640px;
-      margin: 0 auto;
-    }
-    
+    main { padding: 16px; max-width: 640px; margin: 0 auto; }
+
     .view { display: none; animation: fadeUp 0.25s ease; }
     .view.active { display: block; }
-    
+
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(6px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    
-    /* ============================================================
-       SEÇÃO HEADER (título da lista)
-       ============================================================ */
+
     .section-head {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
+      display: flex; align-items: baseline; justify-content: space-between;
       margin: 4px 0 12px;
     }
-    
     .section-head h2 {
-      margin: 0;
-      font-size: 22px;
-      font-weight: 800;
-      letter-spacing: -0.03em;
+      margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -0.03em;
     }
-    
     .section-head .subtitle {
-      font-size: 12px;
-      color: var(--text-3);
-      font-weight: 600;
+      font-size: 12px; color: var(--text-3); font-weight: 600;
     }
-    
+
     /* ============================================================
-       LISTA DE NOTAS (feed)
+       FEED DE NOTAS
        ============================================================ */
-    .notes-feed {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    
+    .notes-feed { display: flex; flex-direction: column; gap: 10px; }
+
     .note {
       background: var(--card);
       border: 1px solid var(--border-soft);
@@ -231,140 +273,100 @@
       align-items: flex-start;
       transition: background 0.15s, transform 0.15s;
     }
-    
-    .note:active {
-      transform: scale(0.985);
-      background: var(--card-hover);
-    }
-    
+    .note:active { transform: scale(0.985); background: var(--card-hover); }
+
     .note::before {
       content: '';
       position: absolute;
       left: 0; top: 0; bottom: 0;
       width: 3px;
     }
-    
     .note.water::before { background: var(--info); }
     .note.pee::before { background: var(--gold); }
     .note.poop::before { background: var(--success); }
     .note.behavior::before { background: var(--warn); }
-    
+
     .note-icon {
-      width: 40px;
-      height: 40px;
+      width: 40px; height: 40px;
       border-radius: 11px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
       background: var(--bg-2);
       border: 1px solid var(--border);
     }
-    
     .note.water .note-icon svg { stroke: var(--info); }
     .note.pee .note-icon svg { stroke: var(--gold); }
     .note.poop .note-icon svg { stroke: var(--success); }
     .note.behavior .note-icon svg { stroke: var(--warn); }
-    
-    .note-icon svg {
-      width: 20px;
-      height: 20px;
-      stroke-width: 2.2;
-    }
-    
+    .note-icon svg { width: 20px; height: 20px; stroke-width: 2.2; }
+
     .note-body { flex: 1; min-width: 0; }
-    
+
     .note-title {
-      font-size: 14.5px;
-      font-weight: 700;
-      color: var(--text);
-      letter-spacing: -0.01em;
-      margin-bottom: 3px;
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
-      flex-wrap: wrap;
+      font-size: 14.5px; font-weight: 700; color: var(--text);
+      letter-spacing: -0.01em; margin-bottom: 3px;
+      display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
     }
-    
     .note-title .badge {
-      font-size: 10.5px;
-      font-weight: 700;
-      padding: 2px 7px;
-      border-radius: 100px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
+      font-size: 10.5px; font-weight: 700;
+      padding: 2px 7px; border-radius: 100px;
+      text-transform: uppercase; letter-spacing: 0.04em;
     }
-    
     .note.water .badge { background: rgba(56,189,248,0.15); color: var(--info); }
     .note.pee .badge { background: rgba(245,197,66,0.15); color: var(--gold); }
     .note.poop .badge { background: rgba(34,197,94,0.15); color: var(--success); }
     .note.behavior .badge { background: rgba(245,158,11,0.15); color: var(--warn); }
-    
+
     .note-meta {
-      font-size: 12px;
-      color: var(--text-3);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
+      font-size: 12px; color: var(--text-3);
+      display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
     }
-    
     .note-meta .dot {
-      width: 3px;
-      height: 3px;
-      border-radius: 50%;
-      background: var(--text-3);
+      width: 3px; height: 3px; border-radius: 50%; background: var(--text-3);
     }
-    
+
     .note-time {
-      font-size: 11px;
-      color: var(--text-3);
-      font-weight: 600;
-      flex-shrink: 0;
-      white-space: nowrap;
+      font-size: 11px; color: var(--text-3); font-weight: 600;
+      flex-shrink: 0; white-space: nowrap;
     }
-    
+
+    /* --- Ações do card (editar / deletar) --- */
+    .note-actions {
+      display: flex; flex-direction: column; gap: 4px;
+      flex-shrink: 0;
+    }
+    .note-action-btn {
+      width: 30px; height: 30px;
+      border-radius: 8px;
+      background: transparent;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s;
+      padding: 0;
+    }
+    .note-action-btn:active { transform: scale(0.9); }
+    .note-action-btn svg { width: 14px; height: 14px; stroke-width: 2.2; }
+    .note-action-btn.edit svg { stroke: var(--primary-light); }
+    .note-action-btn.del svg { stroke: var(--danger); }
+    .note-action-btn.del:active { background: rgba(239, 68, 68, 0.15); }
+
     /* ============================================================
        EMPTY STATE
        ============================================================ */
-    .empty-state {
-      text-align: center;
-      padding: 48px 20px;
-      color: var(--text-3);
-    }
-    
+    .empty-state { text-align: center; padding: 48px 20px; color: var(--text-3); }
     .empty-state .icon-wrap {
-      width: 64px;
-      height: 64px;
-      border-radius: 20px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 64px; height: 64px; border-radius: 20px;
+      background: var(--card); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
       margin: 0 auto 16px;
     }
-    
     .empty-state svg {
-      width: 28px;
-      height: 28px;
-      stroke: var(--primary-light);
-      stroke-width: 1.8;
+      width: 28px; height: 28px; stroke: var(--primary-light); stroke-width: 1.8;
     }
-    
-    .empty-state h3 {
-      margin: 0 0 6px;
-      font-size: 15px;
-      color: var(--text);
-      font-weight: 700;
-    }
-    
-    .empty-state p {
-      margin: 0;
-      font-size: 13px;
-      line-height: 1.5;
-    }
-    
+    .empty-state h3 { margin: 0 0 6px; font-size: 15px; color: var(--text); font-weight: 700; }
+    .empty-state p { margin: 0; font-size: 13px; line-height: 1.5; }
+
     /* ============================================================
        CARDS
        ============================================================ */
@@ -375,597 +377,603 @@
       padding: 16px;
       margin-bottom: 12px;
     }
-    
     .card-title {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin: 0 0 14px;
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text-2);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+      display: flex; align-items: center; gap: 8px;
+      margin: 0 0 14px; font-size: 13px; font-weight: 700;
+      color: var(--text-2); text-transform: uppercase; letter-spacing: 0.05em;
     }
-    
     .card-title svg {
-      width: 16px;
-      height: 16px;
-      stroke: var(--primary-light);
-      stroke-width: 2.2;
-      flex-shrink: 0;
+      width: 16px; height: 16px; stroke: var(--primary-light);
+      stroke-width: 2.2; flex-shrink: 0;
     }
-    
-    .card-title .accent {
-      color: var(--gold);
-      stroke: var(--gold);
-    }
-    
+    .card-title .accent { color: var(--gold); stroke: var(--gold); }
+
     /* ============================================================
        STATS
        ============================================================ */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-    }
-    
+    .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+
     .stat {
-      background: var(--bg-2);
-      border: 1px solid var(--border-soft);
-      border-radius: var(--radius-sm);
-      padding: 12px;
-      position: relative;
-      overflow: hidden;
+      background: var(--bg-2); border: 1px solid var(--border-soft);
+      border-radius: var(--radius-sm); padding: 12px;
+      position: relative; overflow: hidden;
     }
-    
     .stat::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 3px; height: 100%;
-      background: var(--primary);
-      opacity: 0.6;
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 3px; height: 100%; background: var(--primary); opacity: 0.6;
     }
-    
     .stat.gold::before { background: var(--gold); }
     .stat.info::before { background: var(--info); }
     .stat.warn::before { background: var(--warn); }
     .stat.success::before { background: var(--success); }
-    
+
     .stat-label {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 10.5px;
-      color: var(--text-3);
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      margin-bottom: 5px;
+      display: flex; align-items: center; gap: 5px;
+      font-size: 10.5px; color: var(--text-3); font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 5px;
     }
-    
     .stat-label svg { width: 13px; height: 13px; }
-    
     .stat-value {
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      color: var(--text);
-      line-height: 1.1;
+      font-size: 20px; font-weight: 800; letter-spacing: -0.03em;
+      color: var(--text); line-height: 1.1;
     }
-    
     .stat-value small {
-      font-size: 11px;
-      color: var(--text-3);
-      font-weight: 600;
-      margin-left: 3px;
+      font-size: 11px; color: var(--text-3); font-weight: 600; margin-left: 3px;
     }
-    
+
     /* ============================================================
        CHART
        ============================================================ */
     .chart-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 8px;
-      font-size: 12px;
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 8px; font-size: 12px;
     }
-    
     .chart-row .day {
-      width: 30px;
-      color: var(--text-3);
-      font-weight: 700;
-      font-size: 11px;
-      text-transform: uppercase;
+      width: 30px; color: var(--text-3); font-weight: 700;
+      font-size: 11px; text-transform: uppercase;
     }
-    
     .chart-row .bar-track {
-      flex: 1;
-      height: 22px;
-      background: var(--bg-2);
-      border-radius: 6px;
-      overflow: hidden;
+      flex: 1; height: 22px; background: var(--bg-2);
+      border-radius: 6px; overflow: hidden;
     }
-    
     .chart-row .bar-fill {
-      height: 100%;
-      border-radius: 6px;
+      height: 100%; border-radius: 6px;
       background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
-      transition: width 0.5s ease;
-      min-width: 2px;
+      transition: width 0.5s ease; min-width: 2px;
     }
-    
     .chart-row.gold .bar-fill {
       background: linear-gradient(90deg, var(--gold-dark) 0%, var(--gold) 100%);
     }
-    
     .chart-row .val {
-      min-width: 58px;
-      text-align: right;
-      color: var(--text-2);
-      font-weight: 700;
-      font-size: 11.5px;
+      min-width: 58px; text-align: right; color: var(--text-2);
+      font-weight: 700; font-size: 11.5px;
     }
-    
+
     /* ============================================================
        RELAÇÕES
        ============================================================ */
     .relation-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      padding: 11px 12px;
-      background: var(--bg-2);
-      border-radius: var(--radius-sm);
-      margin-bottom: 8px;
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 11px 12px; background: var(--bg-2);
+      border-radius: var(--radius-sm); margin-bottom: 8px;
       border-left: 3px solid var(--primary);
-      font-size: 13px;
-      color: var(--text-2);
-      line-height: 1.45;
+      font-size: 13px; color: var(--text-2); line-height: 1.45;
     }
-    
     .relation-item.gold { border-left-color: var(--gold); }
     .relation-item.info { border-left-color: var(--info); }
-    
     .relation-item svg {
-      width: 16px;
-      height: 16px;
-      stroke: var(--primary-light);
-      stroke-width: 2.2;
-      flex-shrink: 0;
-      margin-top: 1px;
+      width: 16px; height: 16px; stroke: var(--primary-light);
+      stroke-width: 2.2; flex-shrink: 0; margin-top: 1px;
     }
-    
     .relation-item.gold svg { stroke: var(--gold); }
     .relation-item.info svg { stroke: var(--info); }
-    
     .relation-item strong { color: var(--text); font-weight: 700; }
-    
+
     /* ============================================================
-       FAB (botão flutuante +)
+       FAB
        ============================================================ */
     .fab {
-      position: fixed;
-      right: 20px;
-      bottom: calc(96px + var(--safe-bottom));
-      width: 58px;
-      height: 58px;
-      border-radius: 18px;
+      position: fixed; right: 20px; bottom: calc(96px + var(--safe-bottom));
+      width: 58px; height: 58px; border-radius: 18px;
       background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-      border: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      border: none; display: flex; align-items: center; justify-content: center;
       cursor: pointer;
       box-shadow: 0 8px 24px var(--primary-glow), 0 4px 12px rgba(0,0,0,0.4);
       z-index: 90;
       transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s;
     }
-    
     .fab svg {
-      width: 26px;
-      height: 26px;
-      stroke: #fff;
-      stroke-width: 2.4;
+      width: 26px; height: 26px; stroke: #fff; stroke-width: 2.4;
       transition: transform 0.3s;
     }
-    
-    .fab:active {
-      transform: scale(0.92);
-    }
-    
-    .fab.open svg {
-      transform: rotate(45deg);
-    }
-    
+    .fab:active { transform: scale(0.92); }
+    .fab.open svg { transform: rotate(45deg); }
+
     /* ============================================================
-       SHEET (bottom sheet para "novo registro")
+       SHEET (bottom sheet)
        ============================================================ */
     .sheet-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.25s;
-      z-index: 200;
+      position: fixed; inset: 0; background: var(--backdrop);
+      backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.25s; z-index: 200;
     }
-    
-    .sheet-backdrop.show {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    
+    .sheet-backdrop.show { opacity: 1; pointer-events: auto; }
+
     .sheet {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
+      position: fixed; bottom: 0; left: 0; right: 0;
       background: var(--bg-2);
       border-radius: 24px 24px 0 0;
       border-top: 1px solid var(--border);
       padding: 8px 20px calc(24px + var(--safe-bottom));
       transform: translateY(100%);
       transition: transform 0.32s cubic-bezier(0.32, 0.72, 0, 1);
-      z-index: 210;
-      max-height: 90vh;
-      overflow-y: auto;
+      z-index: 210; max-height: 90vh; overflow-y: auto;
     }
-    
-    .sheet.show {
-      transform: translateY(0);
-    }
-    
+    .sheet.show { transform: translateY(0); }
+
     .sheet-handle {
-      width: 40px;
-      height: 4px;
-      border-radius: 100px;
-      background: var(--border);
-      margin: 0 auto 16px;
+      width: 40px; height: 4px; border-radius: 100px;
+      background: var(--border); margin: 0 auto 16px;
     }
-    
     .sheet-title {
-      font-size: 17px;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      margin: 0 0 4px;
-      text-align: center;
+      font-size: 17px; font-weight: 800; letter-spacing: -0.02em;
+      margin: 0 0 4px; text-align: center;
     }
-    
     .sheet-sub {
-      font-size: 12.5px;
-      color: var(--text-3);
-      text-align: center;
-      margin: 0 0 20px;
+      font-size: 12.5px; color: var(--text-3);
+      text-align: center; margin: 0 0 20px;
     }
-    
-    /* Menu de tipos de registro */
+
     .type-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-bottom: 8px;
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 10px; margin-bottom: 8px;
     }
-    
     .type-btn {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 18px 14px;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 10px;
-      cursor: pointer;
-      transition: all 0.15s;
-      font-family: inherit;
-      text-align: left;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 18px 14px;
+      display: flex; flex-direction: column; align-items: flex-start;
+      gap: 10px; cursor: pointer; transition: all 0.15s;
+      font-family: inherit; text-align: left;
     }
-    
     .type-btn:active {
-      transform: scale(0.96);
-      background: var(--card-hover);
+      transform: scale(0.96); background: var(--card-hover);
       border-color: var(--primary);
     }
-    
     .type-btn .type-icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--bg-2);
-      border: 1px solid var(--border);
+      width: 42px; height: 42px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--bg-2); border: 1px solid var(--border);
     }
-    
     .type-btn .type-icon svg { width: 22px; height: 22px; stroke-width: 2.2; }
-    
     .type-btn.water .type-icon svg { stroke: var(--info); }
     .type-btn.pee .type-icon svg { stroke: var(--gold); }
     .type-btn.poop .type-icon svg { stroke: var(--success); }
     .type-btn.behavior .type-icon svg { stroke: var(--warn); }
-    
     .type-btn .type-label {
-      font-size: 14.5px;
-      font-weight: 700;
-      color: var(--text);
+      font-size: 14.5px; font-weight: 700; color: var(--text);
       letter-spacing: -0.01em;
     }
-    
     .type-btn .type-desc {
-      font-size: 11.5px;
-      color: var(--text-3);
-      font-weight: 500;
-      margin-top: -4px;
+      font-size: 11.5px; color: var(--text-3); font-weight: 500; margin-top: -4px;
     }
-    
-    /* Voltar dentro do sheet */
+
     .sheet-back {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: none;
-      border: none;
-      color: var(--text-3);
-      font-size: 13px;
-      font-weight: 600;
-      padding: 8px 4px;
-      margin-bottom: 12px;
-      cursor: pointer;
-      font-family: inherit;
+      display: inline-flex; align-items: center; gap: 6px;
+      background: none; border: none; color: var(--text-3);
+      font-size: 13px; font-weight: 600; padding: 8px 4px;
+      margin-bottom: 12px; cursor: pointer; font-family: inherit;
     }
-    
     .sheet-back svg { width: 16px; height: 16px; stroke-width: 2.4; }
-    
+
     /* ============================================================
        FORMULÁRIOS
        ============================================================ */
     .field { margin-bottom: 12px; }
-    
     .field label {
-      display: block;
-      font-size: 11px;
-      color: var(--text-3);
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 6px;
+      display: block; font-size: 11px; color: var(--text-3);
+      font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.05em; margin-bottom: 6px;
     }
-    
     .field input,
     .field select,
     .field textarea {
-      width: 100%;
-      padding: 13px 14px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      font-size: 15px;
-      color: var(--text);
-      font-family: inherit;
+      width: 100%; padding: 13px 14px;
+      background: var(--input-bg); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); font-size: 15px;
+      color: var(--text); font-family: inherit;
       transition: border-color 0.15s, background 0.15s;
-      -webkit-appearance: none;
-      appearance: none;
+      -webkit-appearance: none; appearance: none;
     }
-    
     .field input:focus,
     .field select:focus,
     .field textarea:focus {
-      outline: none;
-      border-color: var(--primary);
-      background: var(--card);
-      box-shadow: 0 0 0 3px var(--primary-glow);
+      outline: none; border-color: var(--primary);
+      background: var(--card); box-shadow: 0 0 0 3px var(--primary-glow);
     }
-    
-    .field textarea {
-      resize: vertical;
-      min-height: 60px;
-    }
-    
+    .field textarea { resize: vertical; min-height: 60px; }
     .field select {
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b6b7e' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: right 14px center;
       padding-right: 36px;
     }
-    
-    /* Botões rápidos de água */
-    .quick-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-      margin-bottom: 14px;
+
+    /* ============================================================
+       CHIPS (Comportamento)
+       ============================================================ */
+    .chips {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-bottom: 12px;
     }
-    
-    .btn-quick {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 2px;
+    .chip {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 14px 6px;
-      color: var(--text);
-      font-size: 15px;
-      font-weight: 800;
-      cursor: pointer;
-      transition: all 0.15s ease;
-      font-family: inherit;
-      letter-spacing: -0.02em;
-    }
-    
-    .btn-quick small {
-      font-size: 9.5px;
-      color: var(--text-3);
+      border-radius: 100px;
+      padding: 8px 14px;
+      font-size: 12.5px;
       font-weight: 600;
-      letter-spacing: 0.04em;
+      color: var(--text-2);
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      user-select: none;
     }
-    
-    .btn-quick:active {
-      transform: scale(0.94);
-      background: var(--primary-dark);
+    .chip svg { width: 13px; height: 13px; stroke-width: 2.2; }
+    .chip:active { transform: scale(0.94); }
+    .chip.active {
+      background: var(--primary);
       border-color: var(--primary);
       color: #fff;
+      box-shadow: 0 4px 12px var(--primary-glow);
     }
-    
+    .chip.active svg { stroke: #fff; }
+
+    /* Cores por categoria */
+    .chip.agressivo.active { background: var(--danger); border-color: var(--danger); }
+    .chip.desobediente.active { background: var(--warn); border-color: var(--warn); }
+    .chip.positivo.active { background: var(--success); border-color: var(--success); }
+    .chip.neutro.active { background: var(--info); border-color: var(--info); }
+
+    /* ============================================================
+       BOTÕES RÁPIDOS DE ÁGUA
+       ============================================================ */
+    .quick-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 8px; margin-bottom: 14px;
+    }
+    .btn-quick {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 2px;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 14px 6px;
+      color: var(--text); font-size: 15px; font-weight: 800;
+      cursor: pointer; transition: all 0.15s ease;
+      font-family: inherit; letter-spacing: -0.02em;
+    }
+    .btn-quick small {
+      font-size: 9.5px; color: var(--text-3);
+      font-weight: 600; letter-spacing: 0.04em;
+    }
+    .btn-quick:active {
+      transform: scale(0.94); background: var(--primary-dark);
+      border-color: var(--primary); color: #fff;
+    }
     .btn-quick:active small { color: rgba(255,255,255,0.7); }
-    
+
     /* ============================================================
        BOTÃO PRIMÁRIO
        ============================================================ */
     .btn-primary {
       width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
       background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-      color: #fff;
-      border: none;
-      padding: 15px;
-      border-radius: var(--radius-sm);
-      font-size: 15px;
-      font-weight: 700;
-      font-family: inherit;
-      cursor: pointer;
+      color: #fff; border: none; padding: 15px;
+      border-radius: var(--radius-sm); font-size: 15px; font-weight: 700;
+      font-family: inherit; cursor: pointer;
       transition: all 0.15s ease;
       box-shadow: 0 4px 16px var(--primary-glow);
-      letter-spacing: -0.01em;
-      margin-top: 4px;
+      letter-spacing: -0.01em; margin-top: 4px;
     }
-    
     .btn-primary svg { width: 18px; height: 18px; stroke-width: 2.4; }
-    
-    .btn-primary:active {
-      transform: scale(0.97);
-    }
-    
+    .btn-primary:active { transform: scale(0.97); }
+
     /* ============================================================
        BOTTOM NAV
        ============================================================ */
     nav.tabs {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      background: rgba(18, 18, 26, 0.92);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      position: fixed; bottom: 0; left: 0; right: 0;
+      z-index: 100; display: flex;
+      background: var(--nav-bg);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
       border-top: 1px solid var(--border-soft);
       padding-bottom: var(--safe-bottom);
+      transition: background 0.3s ease;
     }
-    
     nav.tabs button {
       flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
-      background: none;
-      border: none;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 3px;
+      background: none; border: none;
       padding: 10px 4px 11px;
-      color: var(--text-3);
-      font-size: 10px;
-      font-weight: 600;
-      font-family: inherit;
-      cursor: pointer;
+      color: var(--text-3); font-size: 10px; font-weight: 600;
+      font-family: inherit; cursor: pointer;
       transition: color 0.15s;
-      position: relative;
-      letter-spacing: 0.02em;
+      position: relative; letter-spacing: 0.02em;
     }
-    
     nav.tabs button svg {
-      width: 21px;
-      height: 21px;
-      stroke-width: 2;
+      width: 21px; height: 21px; stroke-width: 2;
       transition: stroke 0.15s, transform 0.15s;
     }
-    
-    nav.tabs button.active {
-      color: var(--primary-light);
-    }
-    
+    nav.tabs button.active { color: var(--primary-light); }
     nav.tabs button.active svg {
-      stroke: var(--primary-light);
-      transform: translateY(-1px);
+      stroke: var(--primary-light); transform: translateY(-1px);
     }
-    
     nav.tabs button.active::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 22px;
-      height: 2.5px;
-      background: var(--primary);
-      border-radius: 0 0 4px 4px;
+      content: ''; position: absolute; top: 0;
+      left: 50%; transform: translateX(-50%);
+      width: 22px; height: 2.5px;
+      background: var(--primary); border-radius: 0 0 4px 4px;
       box-shadow: 0 0 10px var(--primary-glow);
     }
-    
+
     /* ============================================================
        TOAST
        ============================================================ */
     .toast {
-      position: fixed;
-      bottom: calc(96px + var(--safe-bottom));
-      left: 50%;
-      transform: translateX(-50%) translateY(10px);
+      position: fixed; bottom: calc(96px + var(--safe-bottom));
+      left: 50%; transform: translateX(-50%) translateY(10px);
       background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-      color: #fff;
-      padding: 11px 18px;
-      border-radius: 100px;
-      font-size: 13px;
-      font-weight: 700;
-      opacity: 0;
-      pointer-events: none;
+      color: #fff; padding: 11px 18px; border-radius: 100px;
+      font-size: 13px; font-weight: 700;
+      opacity: 0; pointer-events: none;
       transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
       z-index: 999;
       box-shadow: 0 8px 24px rgba(0,0,0,0.5), 0 0 20px var(--primary-glow);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      white-space: nowrap;
-      max-width: calc(100vw - 32px);
+      display: flex; align-items: center; gap: 6px;
+      white-space: nowrap; max-width: calc(100vw - 32px);
     }
-    
-    .toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-    
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     .toast svg { width: 15px; height: 15px; stroke-width: 2.5; }
-    
+
     /* ============================================================
-       EMPTY
+       TIMER EM TELA CHEIA (castigo)
        ============================================================ */
-    .empty {
+    .timer-overlay {
+      position: fixed; inset: 0; z-index: 500;
+      background: linear-gradient(160deg, #0a0a0f 0%, #1a0f2e 100%);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: calc(24px + var(--safe-top)) 24px calc(24px + var(--safe-bottom));
       text-align: center;
-      padding: 20px 10px;
-      color: var(--text-3);
-      font-size: 13px;
+      color: #fff;
     }
-    
+    .timer-overlay.show { display: flex; animation: fadeUp 0.4s ease; }
+
+    .timer-overlay::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(239, 68, 68, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .timer-overlay.running { animation: dangerPulse 2s ease-in-out infinite; }
+    @keyframes dangerPulse {
+      0%, 100% { background: linear-gradient(160deg, #0a0a0f 0%, #1a0f2e 100%); }
+      50% { background: linear-gradient(160deg, #1a0a0f 0%, #2e0f1a 100%); }
+    }
+
+    .timer-label {
+      font-size: 13px; color: rgba(255,255,255,0.6);
+      text-transform: uppercase; letter-spacing: 0.15em;
+      font-weight: 700; margin-bottom: 16px;
+      position: relative; z-index: 1;
+    }
+
+    .timer-display {
+      font-size: clamp(80px, 22vw, 160px);
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+      background: linear-gradient(180deg, #ffffff 0%, #a78bfa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+      position: relative; z-index: 1;
+    }
+
+    .timer-sub {
+      font-size: 15px; color: rgba(255,255,255,0.7);
+      margin-bottom: 40px; position: relative; z-index: 1;
+      max-width: 320px;
+    }
+
+    .timer-actions {
+      display: flex; flex-direction: column; gap: 12px;
+      width: 100%; max-width: 320px;
+      position: relative; z-index: 1;
+    }
+
+    .timer-btn {
+      padding: 16px 24px; border-radius: 14px;
+      border: none; font-size: 15px; font-weight: 700;
+      font-family: inherit; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px; transition: all 0.15s;
+    }
+    .timer-btn svg { width: 18px; height: 18px; stroke-width: 2.4; }
+    .timer-btn:active { transform: scale(0.96); }
+
+    .timer-btn.start {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(239, 68, 68, 0.35);
+    }
+    .timer-btn.cancel {
+      background: rgba(255, 255, 255, 0.08);
+      color: rgba(255,255,255,0.85);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    /* Estado de contagem */
+    .timer-countdown { display: none; }
+    .timer-overlay.counting .timer-countdown { display: block; }
+    .timer-overlay.counting .timer-setup { display: none; }
+    .timer-overlay.done .timer-countdown { display: block; }
+    .timer-overlay.done .timer-setup { display: none; }
+
+    .timer-overlay.done .timer-display {
+      background: linear-gradient(180deg, #22c55e 0%, #10b981 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+
+    /* Input de minutos */
+    .timer-presets {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      justify-content: center; margin-bottom: 20px;
+      position: relative; z-index: 1;
+    }
+    .timer-preset {
+      padding: 10px 18px;
+      border-radius: 100px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.05);
+      color: #fff; font-size: 15px; font-weight: 700;
+      font-family: inherit; cursor: pointer;
+      transition: all 0.15s;
+    }
+    .timer-preset:active { transform: scale(0.94); }
+    .timer-preset.active {
+      background: #ef4444; border-color: #ef4444;
+      box-shadow: 0 4px 16px rgba(239, 68, 68, 0.4);
+    }
+
+    /* ============================================================
+       MODAL DE CONFIRMAÇÃO (delete)
+       ============================================================ */
+    .confirm-overlay {
+      position: fixed; inset: 0; z-index: 400;
+      background: var(--backdrop);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .confirm-overlay.show { display: flex; }
+
+    .confirm-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      max-width: 340px; width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+    .confirm-box .icon {
+      width: 56px; height: 56px; border-radius: 16px;
+      background: rgba(239, 68, 68, 0.15);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px;
+    }
+    .confirm-box .icon svg { width: 26px; height: 26px; stroke: var(--danger); stroke-width: 2.2; }
+    .confirm-box h3 {
+      margin: 0 0 8px; font-size: 17px; font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .confirm-box p {
+      margin: 0 0 20px; font-size: 13.5px; color: var(--text-3);
+      line-height: 1.5;
+    }
+    .confirm-actions {
+      display: flex; gap: 10px;
+    }
+    .confirm-actions button {
+      flex: 1; padding: 13px; border-radius: var(--radius-sm);
+      border: none; font-family: inherit; font-size: 14px;
+      font-weight: 700; cursor: pointer; transition: all 0.15s;
+    }
+    .confirm-actions button:active { transform: scale(0.96); }
+    .confirm-actions .cancel {
+      background: var(--bg-2); color: var(--text-2);
+      border: 1px solid var(--border);
+    }
+    .confirm-actions .danger {
+      background: var(--danger); color: #fff;
+      box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3);
+    }
+
+    /* ============================================================
+       THEME PICKER
+       ============================================================ */
+    .theme-picker {
+      display: flex; gap: 8px; margin-bottom: 16px;
+    }
+    .theme-option {
+      flex: 1;
+      padding: 14px 8px;
+      border-radius: var(--radius-sm);
+      border: 2px solid var(--border);
+      background: var(--card);
+      display: flex; flex-direction: column;
+      align-items: center; gap: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+      color: var(--text-2);
+      font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .theme-option:active { transform: scale(0.96); }
+    .theme-option.active {
+      border-color: var(--primary);
+      color: var(--primary-light);
+      box-shadow: 0 0 0 3px var(--primary-glow);
+    }
+    .theme-preview {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .theme-preview.dark { background: linear-gradient(135deg, #0a0a0f 0%, #16161f 100%); }
+    .theme-preview.light { background: linear-gradient(135deg, #f5f5f7 0%, #ffffff 100%); }
+    .theme-preview.glass {
+      background: linear-gradient(135deg, #1a1a3e 0%, #2d1b4e 100%);
+    }
+    .theme-preview.glass::after {
+      content: '';
+      position: absolute;
+      width: 30px; height: 30px;
+      background: radial-gradient(circle, #8b5cf6 0%, transparent 70%);
+      border-radius: 50%;
+      top: -5px; right: -5px;
+      filter: blur(8px);
+    }
+
     /* ============================================================
        ANIMAÇÕES
        ============================================================ */
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
-    
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
     .loading { animation: pulse 1.5s ease-in-out infinite; }
-    
+
     @media (max-width: 360px) {
       .stat-value { font-size: 18px; }
       .btn-quick { padding: 12px 4px; font-size: 13px; }
       .quick-grid { gap: 6px; }
       .type-grid { gap: 8px; }
+      .note-actions { flex-direction: row; }
     }
   </style>
 </head>
@@ -985,16 +993,21 @@
         <p id="headerSub">Hoje</p>
       </div>
     </div>
-    <button class="header-btn" onclick="switchTab('stats')" aria-label="Estatísticas">
-      <i data-lucide="bar-chart-3"></i>
-    </button>
+    <div class="header-actions">
+      <button class="header-btn" onclick="openThemePicker()" aria-label="Tema">
+        <i data-lucide="palette"></i>
+      </button>
+      <button class="header-btn" onclick="switchTab('stats')" aria-label="Estatísticas">
+        <i data-lucide="bar-chart-3"></i>
+      </button>
+    </div>
   </div>
 </header>
 
 <main>
 
   <!-- ============================================================
-       VIEW: DIÁRIO (feed de registros)
+       VIEW: DIÁRIO
        ============================================================ -->
   <section id="view-diary" class="view active">
     <div class="section-head">
@@ -1003,9 +1016,7 @@
     </div>
     <div id="notesFeed" class="notes-feed">
       <div class="empty-state">
-        <div class="icon-wrap">
-          <i data-lucide="sparkles"></i>
-        </div>
+        <div class="icon-wrap"><i data-lucide="sparkles"></i></div>
         <h3>Nenhum registro ainda</h3>
         <p>Toque no <strong>+</strong> para adicionar<br>o primeiro registro do dia.</p>
       </div>
@@ -1022,10 +1033,7 @@
     </div>
 
     <div class="card">
-      <div class="card-title">
-        <i data-lucide="layout-dashboard"></i>
-        Resumo de hoje
-      </div>
+      <div class="card-title"><i data-lucide="layout-dashboard"></i> Resumo de hoje</div>
       <div class="stats-grid">
         <div class="stat info">
           <div class="stat-label"><i data-lucide="droplets"></i> Água</div>
@@ -1055,33 +1063,18 @@
     </div>
 
     <div class="card">
-      <div class="card-title">
-        <i data-lucide="droplets"></i>
-        Consumo de água
-      </div>
-      <div id="chartWater">
-        <div class="empty">Sem dados ainda</div>
-      </div>
+      <div class="card-title"><i data-lucide="droplets"></i> Consumo de água</div>
+      <div id="chartWater"><div class="empty">Sem dados ainda</div></div>
     </div>
 
     <div class="card">
-      <div class="card-title">
-        <i data-lucide="toilet" class="accent"></i>
-        Frequência urinária
-      </div>
-      <div id="chartPee">
-        <div class="empty">Sem dados ainda</div>
-      </div>
+      <div class="card-title"><i data-lucide="toilet" class="accent"></i> Frequência urinária</div>
+      <div id="chartPee"><div class="empty">Sem dados ainda</div></div>
     </div>
 
     <div class="card">
-      <div class="card-title">
-        <i data-lucide="search" class="accent"></i>
-        Relações identificadas
-      </div>
-      <div id="relations">
-        <div class="empty">Sem dados suficientes ainda</div>
-      </div>
+      <div class="card-title"><i data-lucide="search" class="accent"></i> Relações identificadas</div>
+      <div id="relations"><div class="empty">Sem dados suficientes ainda</div></div>
     </div>
   </section>
 
@@ -1095,14 +1088,13 @@
 </button>
 
 <!-- ============================================================
-     SHEET: NOVO REGISTRO
+     SHEET
      ============================================================ -->
 <div class="sheet-backdrop" id="sheetBackdrop" onclick="closeSheet()"></div>
 
 <div class="sheet" id="sheet">
   <div class="sheet-handle"></div>
 
-  <!-- ETAPA 1: escolher tipo -->
   <div id="sheetStep1">
     <h2 class="sheet-title">Novo registro</h2>
     <p class="sheet-sub">O que você quer registrar?</p>
@@ -1130,13 +1122,91 @@
     </div>
   </div>
 
-  <!-- ETAPA 2: formulário dinâmico -->
   <div id="sheetStep2" style="display:none;">
     <button class="sheet-back" onclick="backToTypes()">
-      <i data-lucide="arrow-left"></i>
-      Voltar
+      <i data-lucide="arrow-left"></i> Voltar
     </button>
     <div id="formContent"></div>
+  </div>
+</div>
+
+<!-- ============================================================
+     TIMER OVERLAY (castigo)
+     ============================================================ -->
+<div class="timer-overlay" id="timerOverlay">
+  <!-- Setup -->
+  <div class="timer-setup">
+    <div class="timer-label">Modo Castigo</div>
+    <div class="timer-display" id="timerSetupDisplay">05:00</div>
+    <div class="timer-sub">Escolha a duração</div>
+
+    <div class="timer-presets">
+      <button class="timer-preset" onclick="setTimerPreset(1)">1min</button>
+      <button class="timer-preset active" onclick="setTimerPreset(5)">5min</button>
+      <button class="timer-preset" onclick="setTimerPreset(10)">10min</button>
+      <button class="timer-preset" onclick="setTimerPreset(15)">15min</button>
+    </div>
+
+    <div class="timer-actions">
+      <button class="timer-btn start" onclick="startTimer()">
+        <i data-lucide="play"></i> Iniciar castigo
+      </button>
+      <button class="timer-btn cancel" onclick="closeTimer()">
+        <i data-lucide="x"></i> Cancelar
+      </button>
+    </div>
+  </div>
+
+  <!-- Countdown -->
+  <div class="timer-countdown">
+    <div class="timer-label" id="timerLabel">Castigo em andamento</div>
+    <div class="timer-display" id="timerDisplay">05:00</div>
+    <div class="timer-sub" id="timerSub">Aguarde o término...</div>
+
+    <div class="timer-actions">
+      <button class="timer-btn cancel" onclick="cancelTimer()" id="timerCancelBtn">
+        <i data-lucide="x"></i> Cancelar
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     CONFIRM DIALOG
+     ============================================================ -->
+<div class="confirm-overlay" id="confirmOverlay">
+  <div class="confirm-box">
+    <div class="icon"><i data-lucide="trash-2"></i></div>
+    <h3 id="confirmTitle">Excluir registro?</h3>
+    <p id="confirmText">Esta ação não pode ser desfeita.</p>
+    <div class="confirm-actions">
+      <button class="cancel" onclick="closeConfirm()">Cancelar</button>
+      <button class="danger" onclick="confirmDelete()">Excluir</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     THEME PICKER (sheet)
+     ============================================================ -->
+<div class="sheet-backdrop" id="themeBackdrop" onclick="closeThemePicker()"></div>
+<div class="sheet" id="themeSheet">
+  <div class="sheet-handle"></div>
+  <h2 class="sheet-title">Tema</h2>
+  <p class="sheet-sub">Escolha a aparência do app</p>
+  <div class="theme-picker">
+    <button class="theme-option" data-theme="dark" onclick="setTheme('dark')">
+      <div class="theme-preview dark"></div>
+      <span>Dark</span>
+    </button>
+    <button class="theme-option" data-theme="light" onclick="setTheme('light')">
+      <div class="theme-preview light"></div>
+      <span>Light</span>
+    </button>
+    <button class="theme-option" data-theme="glass" onclick="setTheme('glass')">
+      <div class="theme-preview glass"></div>
+      <span>Glass</span>
+    </button>
   </div>
 </div>
 
@@ -1183,22 +1253,62 @@ function toast(msg, icon = "check-circle") {
 function todayKey() {
   return new Date().toISOString().slice(0, 10);
 }
-
-function nowISO() {
-  return new Date().toISOString();
-}
-
+function nowISO() { return new Date().toISOString(); }
 function formatHM(iso) {
   const d = new Date(iso);
   return d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
 }
-
 function vibrate(ms = 12) {
   if (navigator.vibrate) navigator.vibrate(ms);
 }
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  }[c]));
+}
 
 /* ============================================================
-   NAVEGAÇÃO ENTRE VIEWS
+   TEMA
+   ============================================================ */
+function applyTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  localStorage.setItem("theme", theme);
+
+  // Atualiza theme-color do navegador
+  const colors = { dark: "#0a0a0f", light: "#f5f5f7", glass: "#0b0b14" };
+  document.querySelector('meta[name="theme-color"]').setAttribute("content", colors[theme] || "#0a0a0f");
+
+  // Marca opção ativa
+  document.querySelectorAll(".theme-option").forEach(o => {
+    o.classList.toggle("active", o.dataset.theme === theme);
+  });
+}
+
+function setTheme(theme) {
+  applyTheme(theme);
+  vibrate(10);
+  toast(`Tema: ${theme}`, "palette");
+  closeThemePicker();
+}
+
+function openThemePicker() {
+  $("themeSheet").classList.add("show");
+  $("themeBackdrop").classList.add("show");
+  vibrate(8);
+}
+function closeThemePicker() {
+  $("themeSheet").classList.remove("show");
+  $("themeBackdrop").classList.remove("show");
+}
+
+// Carrega tema salvo
+(function initTheme() {
+  const saved = localStorage.getItem("theme") || "dark";
+  applyTheme(saved);
+})();
+
+/* ============================================================
+   NAVEGAÇÃO
    ============================================================ */
 function switchTab(view) {
   document.querySelectorAll("nav.tabs button").forEach(b => {
@@ -1218,7 +1328,7 @@ document.querySelectorAll("nav.tabs button").forEach(btn => {
 });
 
 /* ============================================================
-   SHEET (bottom sheet)
+   SHEET
    ============================================================ */
 let currentForm = null;
 
@@ -1228,9 +1338,8 @@ function toggleSheet() {
   const fab = $("fab");
   const isOpen = sheet.classList.contains("show");
 
-  if (isOpen) {
-    closeSheet();
-  } else {
+  if (isOpen) closeSheet();
+  else {
     sheet.classList.add("show");
     backdrop.classList.add("show");
     fab.classList.add("open");
@@ -1264,7 +1373,7 @@ function backToTypes() {
 }
 
 /* ============================================================
-   FORMULÁRIOS DINÂMICOS
+   FORMULÁRIOS
    ============================================================ */
 function buildForm(type) {
   if (type === "water") {
@@ -1332,8 +1441,7 @@ function buildForm(type) {
       </div>
 
       <button class="btn-primary" onclick="savePee()">
-        <i data-lucide="check"></i>
-        Salvar registro
+        <i data-lucide="check"></i> Salvar registro
       </button>
     `;
   }
@@ -1372,8 +1480,7 @@ function buildForm(type) {
       </div>
 
       <button class="btn-primary" onclick="savePoop()">
-        <i data-lucide="check"></i>
-        Salvar registro
+        <i data-lucide="check"></i> Salvar registro
       </button>
     `;
   }
@@ -1381,41 +1488,92 @@ function buildForm(type) {
   if (type === "behavior") {
     return `
       <h2 class="sheet-title">🧱 Comportamento</h2>
-      <p class="sheet-sub">Registre a intervenção aplicada</p>
+      <p class="sheet-sub">Selecione o que aconteceu</p>
 
       <div class="field">
-        <label>Comportamento observado</label>
-        <input id="behObs" placeholder="Ex: jogou objeto">
+        <label>O que aconteceu?</label>
+        <div class="chips" id="behObservedChips">
+          <button class="chip agressivo" onclick="selectChip(this, 'behObserved')">Bateu</button>
+          <button class="chip agressivo" onclick="selectChip(this, 'behObserved')">Jogou objeto</button>
+          <button class="chip agressivo" onclick="selectChip(this, 'behObserved')">Gritou</button>
+          <button class="chip desobediente" onclick="selectChip(this, 'behObserved')">Não obedeceu</button>
+          <button class="chip desobediente" onclick="selectChip(this, 'behObserved')">Saiu do lugar</button>
+          <button class="chip desobediente" onclick="selectChip(this, 'behObserved')">Recusou tarefa</button>
+          <button class="chip neutro" onclick="selectChip(this, 'behObserved')">Chorou</button>
+          <button class="chip neutro" onclick="selectChip(this, 'behObserved')">Outro</button>
+        </div>
+        <input type="hidden" id="behObserved" value="">
       </div>
 
       <div class="field">
         <label>Regra quebrada</label>
-        <input id="behRule" placeholder="Ex: não jogar objetos">
+        <div class="chips" id="behRuleChips">
+          <button class="chip" onclick="selectChip(this, 'behRule')">Não bater</button>
+          <button class="chip" onclick="selectChip(this, 'behRule')">Não jogar objetos</button>
+          <button class="chip" onclick="selectChip(this, 'behRule')">Falar baixo</button>
+          <button class="chip" onclick="selectChip(this, 'behRule')">Permanecer no lugar</button>
+          <button class="chip" onclick="selectChip(this, 'behRule')">Fazer a tarefa</button>
+          <button class="chip" onclick="selectChip(this, 'behRule')">Outra</button>
+        </div>
+        <input type="hidden" id="behRule" value="">
       </div>
 
       <div class="field">
         <label>Intervenção aplicada</label>
-        <input id="behAction" placeholder="Ex: pausa de 5 min">
-      </div>
-
-      <div class="field">
-        <label>Duração (min)</label>
-        <input type="number" id="behDur" value="5" inputmode="numeric">
+        <div class="chips">
+          <button class="chip" onclick="selectChip(this, 'behAction')">Pausa 5 min</button>
+          <button class="chip" onclick="selectChip(this, 'behAction')">Pausa 10 min</button>
+          <button class="chip" onclick="selectChip(this, 'behAction')">Retirar brinquedo</button>
+          <button class="chip" onclick="selectChip(this, 'behAction')">Conversa</button>
+          <button class="chip" onclick="selectChip(this, 'behAction')">Redirecionar</button>
+          <button class="chip" onclick="selectChip(this, 'behAction')">Ignorar</button>
+          <button class="chip" onclick="selectChip(this, 'behAction')">Tempo fora</button>
+        </div>
+        <input type="hidden" id="behAction" value="">
       </div>
 
       <div class="field">
         <label>Resultado</label>
-        <input id="behResult" placeholder="Ex: voltou à atividade">
+        <div class="chips">
+          <button class="chip positivo" onclick="selectChip(this, 'behResult')">Acalmou</button>
+          <button class="chip positivo" onclick="selectChip(this, 'behResult')">Voltou à atividade</button>
+          <button class="chip positivo" onclick="selectChip(this, 'behResult')">Pediu desculpas</button>
+          <button class="chip neutro" onclick="selectChip(this, 'behResult')">Repetiu</button>
+          <button class="chip agressivo" onclick="selectChip(this, 'behResult')">Piorou</button>
+        </div>
+        <input type="hidden" id="behResult" value="">
       </div>
 
+      <!-- Botão de castigo com timer -->
+      <button class="btn-primary" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); box-shadow: 0 4px 16px rgba(239,68,68,0.35);" onclick="openTimerFromBehavior()">
+        <i data-lucide="timer"></i> Iniciar castigo cronometrado
+      </button>
+
+      <div style="height: 8px;"></div>
+
       <button class="btn-primary" onclick="saveBehavior()">
-        <i data-lucide="check"></i>
-        Salvar intervenção
+        <i data-lucide="check"></i> Salvar sem cronômetro
       </button>
     `;
   }
 
   return "";
+}
+
+/* ============================================================
+   CHIPS
+   ============================================================ */
+function selectChip(el, hiddenId) {
+  // Desmarca os outros chips do mesmo grupo
+  const parent = el.parentElement;
+  parent.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+  el.classList.add("active");
+
+  // Atualiza o hidden input
+  const hidden = $(hiddenId);
+  if (hidden) hidden.value = el.textContent.trim();
+
+  vibrate(8);
 }
 
 /* ============================================================
@@ -1448,6 +1606,34 @@ async function apiGet(path) {
   }
 }
 
+async function apiPut(path, body) {
+  try {
+    const res = await fetch(API_BASE + path, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body)
+    });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    return await res.json();
+  } catch (err) {
+    console.error("PUT erro:", err);
+    toast("Erro ao atualizar", "alert-circle");
+    return null;
+  }
+}
+
+async function apiDelete(path) {
+  try {
+    const res = await fetch(API_BASE + path, { method: "DELETE" });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    return await res.json();
+  } catch (err) {
+    console.error("DELETE erro:", err);
+    toast("Erro ao excluir", "alert-circle");
+    return null;
+  }
+}
+
 /* ============================================================
    REGISTROS
    ============================================================ */
@@ -1455,8 +1641,7 @@ async function quickWater(ml) {
   vibrate(15);
   const reason = $("waterReason") ? $("waterReason").value : "Outro";
   const result = await apiPost("/water", {
-    amount: ml,
-    reason,
+    amount: ml, reason,
     timestamp: nowISO(),
     date: todayKey()
   });
@@ -1507,17 +1692,18 @@ async function savePoop() {
 }
 
 async function saveBehavior() {
-  if (!$("behObs").value.trim()) {
+  const observed = $("behObserved")?.value.trim();
+  if (!observed) {
     vibrate([20, 40, 20]);
-    return toast("Descreva o comportamento", "alert-circle");
+    return toast("Selecione o que aconteceu", "alert-circle");
   }
   vibrate(15);
   const result = await apiPost("/behavior", {
-    observed: $("behObs").value,
-    rule: $("behRule").value,
-    action: $("behAction").value,
-    duration: parseInt($("behDur").value, 10) || 0,
-    result: $("behResult").value,
+    observed,
+    rule: $("behRule")?.value || "",
+    action: $("behAction")?.value || "",
+    duration: 0,
+    result: $("behResult")?.value || "",
     timestamp: nowISO(),
     date: todayKey()
   });
@@ -1546,14 +1732,12 @@ async function loadDiary() {
 }
 
 function renderFeed(data) {
-  // Junta todos os registros com tipo
   const items = [];
   (data.water || []).forEach(w => items.push({ type: "water", ts: w.timestamp, data: w }));
   (data.pee || []).forEach(p => items.push({ type: "pee", ts: p.timestamp, data: p }));
   (data.poop || []).forEach(p => items.push({ type: "poop", ts: p.timestamp, data: p }));
   (data.behavior || []).forEach(b => items.push({ type: "behavior", ts: b.timestamp, data: b }));
 
-  // Ordena do mais recente para o mais antigo
   items.sort((a, b) => new Date(b.ts) - new Date(a.ts));
 
   $("diaryCount").textContent = items.length === 0
@@ -1563,9 +1747,7 @@ function renderFeed(data) {
   if (items.length === 0) {
     $("notesFeed").innerHTML = `
       <div class="empty-state">
-        <div class="icon-wrap">
-          <i data-lucide="sparkles"></i>
-        </div>
+        <div class="icon-wrap"><i data-lucide="sparkles"></i></div>
         <h3>Nenhum registro ainda</h3>
         <p>Toque no <strong>+</strong> para adicionar<br>o primeiro registro do dia.</p>
       </div>
@@ -1580,21 +1762,29 @@ function renderFeed(data) {
 
 function renderNote({ type, ts, data }) {
   const time = formatHM(ts);
+  const id = data.id || "";
+
+  const actionsHtml = id ? `
+    <div class="note-actions">
+      <button class="note-action-btn edit" onclick="event.stopPropagation(); toast('Edição em breve','pencil')" aria-label="Editar">
+        <i data-lucide="pencil"></i>
+      </button>
+      <button class="note-action-btn del" onclick="event.stopPropagation(); askDelete('${type}', '${id}')" aria-label="Excluir">
+        <i data-lucide="trash-2"></i>
+      </button>
+    </div>
+  ` : "";
 
   if (type === "water") {
     return `
       <div class="note water">
         <div class="note-icon"><i data-lucide="droplets"></i></div>
         <div class="note-body">
-          <div class="note-title">
-            ${data.amount} mL
-            <span class="badge">Água</span>
-          </div>
-          <div class="note-meta">
-            ${data.reason || "—"}
-          </div>
+          <div class="note-title">${data.amount} mL <span class="badge">Água</span></div>
+          <div class="note-meta">${data.reason || "—"}</div>
         </div>
         <div class="note-time">${time}</div>
+        ${actionsHtml}
       </div>
     `;
   }
@@ -1606,16 +1796,14 @@ function renderNote({ type, ts, data }) {
       <div class="note pee">
         <div class="note-icon"><i data-lucide="toilet"></i></div>
         <div class="note-body">
-          <div class="note-title">
-            ${typeMap[data.type] || "Xixi"}
-            <span class="badge">Xixi</span>
-          </div>
+          <div class="note-title">${typeMap[data.type] || "Xixi"} <span class="badge">Xixi</span></div>
           <div class="note-meta">
             Tamanho: ${sizeMap[data.size] || data.size}
-            ${data.note ? ` · ${data.note}` : ""}
+            ${data.note ? ` · ${escapeHtml(data.note)}` : ""}
           </div>
         </div>
         <div class="note-time">${time}</div>
+        ${actionsHtml}
       </div>
     `;
   }
@@ -1625,17 +1813,15 @@ function renderNote({ type, ts, data }) {
       <div class="note poop">
         <div class="note-icon"><i data-lucide="circle-dot"></i></div>
         <div class="note-body">
-          <div class="note-title">
-            ${data.evacuated ? "Evacuou" : "Não evacuou"}
-            <span class="badge">Intestino</span>
-          </div>
+          <div class="note-title">${data.evacuated ? "Evacuou" : "Não evacuou"} <span class="badge">Intestino</span></div>
           <div class="note-meta">
             ${data.consistency || ""}
             ${data.pain > 0 ? ` · Dor ${data.pain}/3` : ""}
-            ${data.note ? ` · ${data.note}` : ""}
+            ${data.note ? ` · ${escapeHtml(data.note)}` : ""}
           </div>
         </div>
         <div class="note-time">${time}</div>
+        ${actionsHtml}
       </div>
     `;
   }
@@ -1645,10 +1831,7 @@ function renderNote({ type, ts, data }) {
       <div class="note behavior">
         <div class="note-icon"><i data-lucide="alert-circle"></i></div>
         <div class="note-body">
-          <div class="note-title">
-            ${escapeHtml(data.observed || "Comportamento")}
-            <span class="badge">Intervenção</span>
-          </div>
+          <div class="note-title">${escapeHtml(data.observed || "Comportamento")} <span class="badge">Intervenção</span></div>
           <div class="note-meta">
             ${data.action ? `Ação: ${escapeHtml(data.action)}` : ""}
             ${data.duration ? ` · ${data.duration} min` : ""}
@@ -1656,6 +1839,7 @@ function renderNote({ type, ts, data }) {
           </div>
         </div>
         <div class="note-time">${time}</div>
+        ${actionsHtml}
       </div>
     `;
   }
@@ -1663,10 +1847,214 @@ function renderNote({ type, ts, data }) {
   return "";
 }
 
-function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, c => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-  }[c]));
+/* ============================================================
+   DELETE
+   ============================================================ */
+let pendingDelete = null;
+
+function askDelete(type, id) {
+  pendingDelete = { type, id };
+  $("confirmTitle").textContent = "Excluir registro?";
+  $("confirmText").textContent = "Esta ação não pode ser desfeita.";
+  $("confirmOverlay").classList.add("show");
+  vibrate(10);
+}
+
+function closeConfirm() {
+  $("confirmOverlay").classList.remove("show");
+  pendingDelete = null;
+}
+
+async function confirmDelete() {
+  if (!pendingDelete) return;
+  const { type, id } = pendingDelete;
+  closeConfirm();
+
+  const result = await apiDelete(`/${type}?id=${id}`);
+  if (result) {
+    toast("Registro excluído", "trash-2");
+    loadDiary();
+  }
+}
+
+/* ============================================================
+   TIMER DE CASTIGO
+   ============================================================ */
+let timerInterval = null;
+let timerSeconds = 0;
+let timerTotalSeconds = 0;
+let timerEndTime = 0;
+let audioCtx = null;
+let alarmInterval = null;
+
+function openTimerFromBehavior() {
+  const observed = $("behObserved")?.value.trim();
+  if (!observed) {
+    vibrate([20, 40, 20]);
+    return toast("Selecione o comportamento primeiro", "alert-circle");
+  }
+  vibrate(20);
+  setTimerPreset(5);
+  const overlay = $("timerOverlay");
+  overlay.classList.remove("counting", "done", "running");
+  overlay.classList.add("show");
+  refreshIcons();
+}
+
+function closeTimer() {
+  $("timerOverlay").classList.remove("show", "counting", "done", "running");
+  stopAlarm();
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+}
+
+function setTimerPreset(min) {
+  document.querySelectorAll(".timer-preset").forEach(b => b.classList.remove("active"));
+  event?.target?.classList.add("active");
+  timerTotalSeconds = min * 60;
+  timerSeconds = timerTotalSeconds;
+  updateTimerSetupDisplay();
+  vibrate(8);
+}
+
+function updateTimerSetupDisplay() {
+  const min = Math.floor(timerTotalSeconds / 60);
+  const sec = timerTotalSeconds % 60;
+  $("timerSetupDisplay").textContent =
+    `${String(min).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+}
+
+function startTimer() {
+  timerSeconds = timerTotalSeconds;
+  timerEndTime = Date.now() + timerSeconds * 1000;
+
+  const overlay = $("timerOverlay");
+  overlay.classList.add("counting", "running");
+  overlay.classList.remove("done");
+  $("timerLabel").textContent = "Castigo em andamento";
+  $("timerSub").textContent = "Aguarde o término...";
+  $("timerCancelBtn").style.display = "flex";
+  updateTimerDisplay();
+  vibrate(30);
+
+  // Libera áudio no iOS
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === "suspended") audioCtx.resume();
+  } catch {}
+
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    const remaining = Math.max(0, Math.round((timerEndTime - Date.now()) / 1000));
+    timerSeconds = remaining;
+    updateTimerDisplay();
+    if (remaining <= 0) finishTimer();
+  }, 200);
+}
+
+function cancelTimer() {
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+  stopAlarm();
+  vibrate([20, 40, 20]);
+  closeTimer();
+  toast("Castigo cancelado", "x-circle");
+}
+
+function finishTimer() {
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+  const overlay = $("timerOverlay");
+  overlay.classList.remove("running");
+  overlay.classList.add("done");
+  $("timerLabel").textContent = "Castigo cumprido ✅";
+  $("timerSub").textContent = "Registrando automaticamente...";
+  $("timerDisplay").textContent = "00:00";
+  $("timerCancelBtn").style.display = "none";
+
+  playAlarm();
+  vibrate([200, 100, 200, 100, 200]);
+  saveBehaviorAfterTimer();
+}
+
+function updateTimerDisplay() {
+  const min = Math.floor(timerSeconds / 60);
+  const sec = timerSeconds % 60;
+  $("timerDisplay").textContent =
+    `${String(min).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+}
+
+async function saveBehaviorAfterTimer() {
+  const observed = $("behObserved")?.value.trim() || "Castigo";
+  const durationMin = Math.round(timerTotalSeconds / 60);
+
+  const result = await apiPost("/behavior", {
+    observed,
+    rule: $("behRule")?.value || "",
+    action: `Castigo de ${durationMin} min`,
+    duration: durationMin,
+    result: "Castigo cumprido",
+    timestamp: nowISO(),
+    date: todayKey()
+  });
+
+  if (result) {
+    toast("Castigo registrado ✅", "check-circle");
+    // Espera o alarme tocar um pouco e fecha
+    setTimeout(() => {
+      closeTimer();
+      closeSheet();
+      loadDiary();
+    }, 2500);
+  } else {
+    toast("Erro ao registrar castigo", "alert-circle");
+    closeTimer();
+  }
+}
+
+/* ============================================================
+   ALARME (Web Audio API)
+   ============================================================ */
+function playAlarm() {
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === "suspended") audioCtx.resume();
+
+    // Toca um "beep beep" repetido por 6 segundos
+    let count = 0;
+    const beep = () => {
+      if (count >= 12) { stopAlarm(); return; }
+      count++;
+
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+      osc.frequency.setValueAtTime(1200, audioCtx.currentTime + 0.15);
+
+      gain.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.3, audioCtx.currentTime + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.4);
+
+      osc.start(audioCtx.currentTime);
+      osc.stop(audioCtx.currentTime + 0.45);
+    };
+
+    beep();
+    alarmInterval = setInterval(beep, 500);
+  } catch (e) {
+    console.warn("Não foi possível tocar alarme:", e);
+  }
+}
+
+function stopAlarm() {
+  if (alarmInterval) {
+    clearInterval(alarmInterval);
+    alarmInterval = null;
+  }
 }
 
 /* ============================================================
@@ -1723,9 +2111,7 @@ function renderCharts(weekly) {
     $("chartWater").innerHTML = days.map((d, i) => `
       <div class="chart-row">
         <div class="day">${d}</div>
-        <div class="bar-track">
-          <div class="bar-fill" style="width:${(water[i]/maxW)*100}%"></div>
-        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:${(water[i]/maxW)*100}%"></div></div>
         <div class="val">${water[i]} mL</div>
       </div>
     `).join("");
@@ -1735,9 +2121,7 @@ function renderCharts(weekly) {
     $("chartPee").innerHTML = days.map((d, i) => `
       <div class="chart-row gold">
         <div class="day">${d}</div>
-        <div class="bar-track">
-          <div class="bar-fill" style="width:${(pee[i]/maxP)*100}%"></div>
-        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:${(pee[i]/maxP)*100}%"></div></div>
         <div class="val">${pee[i]}x</div>
       </div>
     `).join("");
@@ -1746,7 +2130,7 @@ function renderCharts(weekly) {
   const totalWater = water.reduce((a,b)=>a+b,0);
   const totalPee = pee.reduce((a,b)=>a+b,0);
   const rel = [];
-  
+
   if (totalWater > 0) {
     rel.push(`<div class="relation-item info">
       <i data-lucide="droplets"></i>
