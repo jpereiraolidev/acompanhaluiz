@@ -1,0 +1,1777 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0a0f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Diário · Acompanhamento</title>
+  
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    /* ============================================================
+       DESIGN SYSTEM — dark premium, estilo app de notas
+       ============================================================ */
+    :root {
+      --bg: #0a0a0f;
+      --bg-2: #12121a;
+      --card: #16161f;
+      --card-hover: #1c1c28;
+      --border: #262633;
+      --border-soft: #1f1f2b;
+      
+      --primary: #8b5cf6;
+      --primary-light: #a78bfa;
+      --primary-dark: #7c3aed;
+      --primary-glow: rgba(139, 92, 246, 0.25);
+      
+      --gold: #f5c542;
+      --gold-dark: #d4a017;
+      
+      --text: #f5f5f7;
+      --text-2: #b8b8c8;
+      --text-3: #6b6b7e;
+      
+      --success: #22c55e;
+      --warn: #f59e0b;
+      --danger: #ef4444;
+      --info: #38bdf8;
+      
+      --radius: 16px;
+      --radius-sm: 10px;
+      --radius-lg: 24px;
+      
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      overscroll-behavior-y: none;
+    }
+    
+    body {
+      padding-bottom: calc(84px + var(--safe-bottom));
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse at top, rgba(139, 92, 246, 0.08) 0%, transparent 55%),
+        radial-gradient(ellipse at bottom right, rgba(245, 197, 66, 0.04) 0%, transparent 50%),
+        var(--bg);
+    }
+    
+    /* ============================================================
+       HEADER
+       ============================================================ */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: calc(14px + var(--safe-top)) 16px 12px;
+      background: rgba(10, 10, 15, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-soft);
+    }
+    
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+    
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 11px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 4px 14px var(--primary-glow);
+    }
+    
+    .brand-icon svg {
+      width: 19px;
+      height: 19px;
+      stroke: #fff;
+      stroke-width: 2.2;
+    }
+    
+    .brand-text h1 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+    }
+    
+    .brand-text p {
+      margin: 0;
+      font-size: 11px;
+      color: var(--text-3);
+      font-weight: 500;
+    }
+    
+    .header-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s;
+      flex-shrink: 0;
+    }
+    
+    .header-btn:active {
+      transform: scale(0.92);
+      background: var(--card-hover);
+    }
+    
+    .header-btn svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--text-2);
+      stroke-width: 2.2;
+    }
+    
+    /* ============================================================
+       MAIN
+       ============================================================ */
+    main {
+      padding: 16px;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    
+    .view { display: none; animation: fadeUp 0.25s ease; }
+    .view.active { display: block; }
+    
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* ============================================================
+       SEÇÃO HEADER (título da lista)
+       ============================================================ */
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin: 4px 0 12px;
+    }
+    
+    .section-head h2 {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+    
+    .section-head .subtitle {
+      font-size: 12px;
+      color: var(--text-3);
+      font-weight: 600;
+    }
+    
+    /* ============================================================
+       LISTA DE NOTAS (feed)
+       ============================================================ */
+    .notes-feed {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .note {
+      background: var(--card);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      transition: background 0.15s, transform 0.15s;
+    }
+    
+    .note:active {
+      transform: scale(0.985);
+      background: var(--card-hover);
+    }
+    
+    .note::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+    }
+    
+    .note.water::before { background: var(--info); }
+    .note.pee::before { background: var(--gold); }
+    .note.poop::before { background: var(--success); }
+    .note.behavior::before { background: var(--warn); }
+    
+    .note-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+    }
+    
+    .note.water .note-icon svg { stroke: var(--info); }
+    .note.pee .note-icon svg { stroke: var(--gold); }
+    .note.poop .note-icon svg { stroke: var(--success); }
+    .note.behavior .note-icon svg { stroke: var(--warn); }
+    
+    .note-icon svg {
+      width: 20px;
+      height: 20px;
+      stroke-width: 2.2;
+    }
+    
+    .note-body { flex: 1; min-width: 0; }
+    
+    .note-title {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.01em;
+      margin-bottom: 3px;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    
+    .note-title .badge {
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 100px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    
+    .note.water .badge { background: rgba(56,189,248,0.15); color: var(--info); }
+    .note.pee .badge { background: rgba(245,197,66,0.15); color: var(--gold); }
+    .note.poop .badge { background: rgba(34,197,94,0.15); color: var(--success); }
+    .note.behavior .badge { background: rgba(245,158,11,0.15); color: var(--warn); }
+    
+    .note-meta {
+      font-size: 12px;
+      color: var(--text-3);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    
+    .note-meta .dot {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--text-3);
+    }
+    
+    .note-time {
+      font-size: 11px;
+      color: var(--text-3);
+      font-weight: 600;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+    
+    /* ============================================================
+       EMPTY STATE
+       ============================================================ */
+    .empty-state {
+      text-align: center;
+      padding: 48px 20px;
+      color: var(--text-3);
+    }
+    
+    .empty-state .icon-wrap {
+      width: 64px;
+      height: 64px;
+      border-radius: 20px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+    
+    .empty-state svg {
+      width: 28px;
+      height: 28px;
+      stroke: var(--primary-light);
+      stroke-width: 1.8;
+    }
+    
+    .empty-state h3 {
+      margin: 0 0 6px;
+      font-size: 15px;
+      color: var(--text);
+      font-weight: 700;
+    }
+    
+    .empty-state p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    
+    /* ============================================================
+       CARDS
+       ============================================================ */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    
+    .card-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 14px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-2);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    .card-title svg {
+      width: 16px;
+      height: 16px;
+      stroke: var(--primary-light);
+      stroke-width: 2.2;
+      flex-shrink: 0;
+    }
+    
+    .card-title .accent {
+      color: var(--gold);
+      stroke: var(--gold);
+    }
+    
+    /* ============================================================
+       STATS
+       ============================================================ */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    
+    .stat {
+      background: var(--bg-2);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .stat::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--primary);
+      opacity: 0.6;
+    }
+    
+    .stat.gold::before { background: var(--gold); }
+    .stat.info::before { background: var(--info); }
+    .stat.warn::before { background: var(--warn); }
+    .stat.success::before { background: var(--success); }
+    
+    .stat-label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 10.5px;
+      color: var(--text-3);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 5px;
+    }
+    
+    .stat-label svg { width: 13px; height: 13px; }
+    
+    .stat-value {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      line-height: 1.1;
+    }
+    
+    .stat-value small {
+      font-size: 11px;
+      color: var(--text-3);
+      font-weight: 600;
+      margin-left: 3px;
+    }
+    
+    /* ============================================================
+       CHART
+       ============================================================ */
+    .chart-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+      font-size: 12px;
+    }
+    
+    .chart-row .day {
+      width: 30px;
+      color: var(--text-3);
+      font-weight: 700;
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+    
+    .chart-row .bar-track {
+      flex: 1;
+      height: 22px;
+      background: var(--bg-2);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    
+    .chart-row .bar-fill {
+      height: 100%;
+      border-radius: 6px;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
+      transition: width 0.5s ease;
+      min-width: 2px;
+    }
+    
+    .chart-row.gold .bar-fill {
+      background: linear-gradient(90deg, var(--gold-dark) 0%, var(--gold) 100%);
+    }
+    
+    .chart-row .val {
+      min-width: 58px;
+      text-align: right;
+      color: var(--text-2);
+      font-weight: 700;
+      font-size: 11.5px;
+    }
+    
+    /* ============================================================
+       RELAÇÕES
+       ============================================================ */
+    .relation-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 11px 12px;
+      background: var(--bg-2);
+      border-radius: var(--radius-sm);
+      margin-bottom: 8px;
+      border-left: 3px solid var(--primary);
+      font-size: 13px;
+      color: var(--text-2);
+      line-height: 1.45;
+    }
+    
+    .relation-item.gold { border-left-color: var(--gold); }
+    .relation-item.info { border-left-color: var(--info); }
+    
+    .relation-item svg {
+      width: 16px;
+      height: 16px;
+      stroke: var(--primary-light);
+      stroke-width: 2.2;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    
+    .relation-item.gold svg { stroke: var(--gold); }
+    .relation-item.info svg { stroke: var(--info); }
+    
+    .relation-item strong { color: var(--text); font-weight: 700; }
+    
+    /* ============================================================
+       FAB (botão flutuante +)
+       ============================================================ */
+    .fab {
+      position: fixed;
+      right: 20px;
+      bottom: calc(96px + var(--safe-bottom));
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 8px 24px var(--primary-glow), 0 4px 12px rgba(0,0,0,0.4);
+      z-index: 90;
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s;
+    }
+    
+    .fab svg {
+      width: 26px;
+      height: 26px;
+      stroke: #fff;
+      stroke-width: 2.4;
+      transition: transform 0.3s;
+    }
+    
+    .fab:active {
+      transform: scale(0.92);
+    }
+    
+    .fab.open svg {
+      transform: rotate(45deg);
+    }
+    
+    /* ============================================================
+       SHEET (bottom sheet para "novo registro")
+       ============================================================ */
+    .sheet-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s;
+      z-index: 200;
+    }
+    
+    .sheet-backdrop.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    
+    .sheet {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: var(--bg-2);
+      border-radius: 24px 24px 0 0;
+      border-top: 1px solid var(--border);
+      padding: 8px 20px calc(24px + var(--safe-bottom));
+      transform: translateY(100%);
+      transition: transform 0.32s cubic-bezier(0.32, 0.72, 0, 1);
+      z-index: 210;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    
+    .sheet.show {
+      transform: translateY(0);
+    }
+    
+    .sheet-handle {
+      width: 40px;
+      height: 4px;
+      border-radius: 100px;
+      background: var(--border);
+      margin: 0 auto 16px;
+    }
+    
+    .sheet-title {
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin: 0 0 4px;
+      text-align: center;
+    }
+    
+    .sheet-sub {
+      font-size: 12.5px;
+      color: var(--text-3);
+      text-align: center;
+      margin: 0 0 20px;
+    }
+    
+    /* Menu de tipos de registro */
+    .type-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    
+    .type-btn {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+      text-align: left;
+    }
+    
+    .type-btn:active {
+      transform: scale(0.96);
+      background: var(--card-hover);
+      border-color: var(--primary);
+    }
+    
+    .type-btn .type-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+    }
+    
+    .type-btn .type-icon svg { width: 22px; height: 22px; stroke-width: 2.2; }
+    
+    .type-btn.water .type-icon svg { stroke: var(--info); }
+    .type-btn.pee .type-icon svg { stroke: var(--gold); }
+    .type-btn.poop .type-icon svg { stroke: var(--success); }
+    .type-btn.behavior .type-icon svg { stroke: var(--warn); }
+    
+    .type-btn .type-label {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+    
+    .type-btn .type-desc {
+      font-size: 11.5px;
+      color: var(--text-3);
+      font-weight: 500;
+      margin-top: -4px;
+    }
+    
+    /* Voltar dentro do sheet */
+    .sheet-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: none;
+      color: var(--text-3);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 4px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    
+    .sheet-back svg { width: 16px; height: 16px; stroke-width: 2.4; }
+    
+    /* ============================================================
+       FORMULÁRIOS
+       ============================================================ */
+    .field { margin-bottom: 12px; }
+    
+    .field label {
+      display: block;
+      font-size: 11px;
+      color: var(--text-3);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+    
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      padding: 13px 14px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 15px;
+      color: var(--text);
+      font-family: inherit;
+      transition: border-color 0.15s, background 0.15s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: var(--card);
+      box-shadow: 0 0 0 3px var(--primary-glow);
+    }
+    
+    .field textarea {
+      resize: vertical;
+      min-height: 60px;
+    }
+    
+    .field select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b6b7e' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+    }
+    
+    /* Botões rápidos de água */
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    
+    .btn-quick {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px 6px;
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-family: inherit;
+      letter-spacing: -0.02em;
+    }
+    
+    .btn-quick small {
+      font-size: 9.5px;
+      color: var(--text-3);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+    
+    .btn-quick:active {
+      transform: scale(0.94);
+      background: var(--primary-dark);
+      border-color: var(--primary);
+      color: #fff;
+    }
+    
+    .btn-quick:active small { color: rgba(255,255,255,0.7); }
+    
+    /* ============================================================
+       BOTÃO PRIMÁRIO
+       ============================================================ */
+    .btn-primary {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #fff;
+      border: none;
+      padding: 15px;
+      border-radius: var(--radius-sm);
+      font-size: 15px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      box-shadow: 0 4px 16px var(--primary-glow);
+      letter-spacing: -0.01em;
+      margin-top: 4px;
+    }
+    
+    .btn-primary svg { width: 18px; height: 18px; stroke-width: 2.4; }
+    
+    .btn-primary:active {
+      transform: scale(0.97);
+    }
+    
+    /* ============================================================
+       BOTTOM NAV
+       ============================================================ */
+    nav.tabs {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      background: rgba(18, 18, 26, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border-soft);
+      padding-bottom: var(--safe-bottom);
+    }
+    
+    nav.tabs button {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      background: none;
+      border: none;
+      padding: 10px 4px 11px;
+      color: var(--text-3);
+      font-size: 10px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: color 0.15s;
+      position: relative;
+      letter-spacing: 0.02em;
+    }
+    
+    nav.tabs button svg {
+      width: 21px;
+      height: 21px;
+      stroke-width: 2;
+      transition: stroke 0.15s, transform 0.15s;
+    }
+    
+    nav.tabs button.active {
+      color: var(--primary-light);
+    }
+    
+    nav.tabs button.active svg {
+      stroke: var(--primary-light);
+      transform: translateY(-1px);
+    }
+    
+    nav.tabs button.active::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 22px;
+      height: 2.5px;
+      background: var(--primary);
+      border-radius: 0 0 4px 4px;
+      box-shadow: 0 0 10px var(--primary-glow);
+    }
+    
+    /* ============================================================
+       TOAST
+       ============================================================ */
+    .toast {
+      position: fixed;
+      bottom: calc(96px + var(--safe-bottom));
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #fff;
+      padding: 11px 18px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 700;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 999;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5), 0 0 20px var(--primary-glow);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      max-width: calc(100vw - 32px);
+    }
+    
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    
+    .toast svg { width: 15px; height: 15px; stroke-width: 2.5; }
+    
+    /* ============================================================
+       EMPTY
+       ============================================================ */
+    .empty {
+      text-align: center;
+      padding: 20px 10px;
+      color: var(--text-3);
+      font-size: 13px;
+    }
+    
+    /* ============================================================
+       ANIMAÇÕES
+       ============================================================ */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    .loading { animation: pulse 1.5s ease-in-out infinite; }
+    
+    @media (max-width: 360px) {
+      .stat-value { font-size: 18px; }
+      .btn-quick { padding: 12px 4px; font-size: 13px; }
+      .quick-grid { gap: 6px; }
+      .type-grid { gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header>
+  <div class="header-top">
+    <div class="brand">
+      <div class="brand-icon">
+        <i data-lucide="notebook-pen"></i>
+      </div>
+      <div class="brand-text">
+        <h1>Diário</h1>
+        <p id="headerSub">Hoje</p>
+      </div>
+    </div>
+    <button class="header-btn" onclick="switchTab('stats')" aria-label="Estatísticas">
+      <i data-lucide="bar-chart-3"></i>
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============================================================
+       VIEW: DIÁRIO (feed de registros)
+       ============================================================ -->
+  <section id="view-diary" class="view active">
+    <div class="section-head">
+      <h2>Hoje</h2>
+      <span class="subtitle" id="diaryCount">0 registros</span>
+    </div>
+    <div id="notesFeed" class="notes-feed">
+      <div class="empty-state">
+        <div class="icon-wrap">
+          <i data-lucide="sparkles"></i>
+        </div>
+        <h3>Nenhum registro ainda</h3>
+        <p>Toque no <strong>+</strong> para adicionar<br>o primeiro registro do dia.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       VIEW: ESTATÍSTICAS
+       ============================================================ -->
+  <section id="view-stats" class="view">
+    <div class="section-head">
+      <h2>Estatísticas</h2>
+      <span class="subtitle">Últimos 7 dias</span>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <i data-lucide="layout-dashboard"></i>
+        Resumo de hoje
+      </div>
+      <div class="stats-grid">
+        <div class="stat info">
+          <div class="stat-label"><i data-lucide="droplets"></i> Água</div>
+          <div class="stat-value" id="statWater">0<small>mL</small></div>
+        </div>
+        <div class="stat gold">
+          <div class="stat-label"><i data-lucide="toilet"></i> Xixis</div>
+          <div class="stat-value" id="statPee">0</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label"><i data-lucide="timer"></i> Intervalo médio</div>
+          <div class="stat-value" id="statInterval">—</div>
+        </div>
+        <div class="stat success">
+          <div class="stat-label"><i data-lucide="circle-dot"></i> Evacuação</div>
+          <div class="stat-value" id="statPoop">0</div>
+        </div>
+        <div class="stat warn">
+          <div class="stat-label"><i data-lucide="alert-circle"></i> Comportamentos</div>
+          <div class="stat-value" id="statBehavior">0</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label"><i data-lucide="clock"></i> Último registro</div>
+          <div class="stat-value" id="statLast">—</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <i data-lucide="droplets"></i>
+        Consumo de água
+      </div>
+      <div id="chartWater">
+        <div class="empty">Sem dados ainda</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <i data-lucide="toilet" class="accent"></i>
+        Frequência urinária
+      </div>
+      <div id="chartPee">
+        <div class="empty">Sem dados ainda</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <i data-lucide="search" class="accent"></i>
+        Relações identificadas
+      </div>
+      <div id="relations">
+        <div class="empty">Sem dados suficientes ainda</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================================================
+     FAB
+     ============================================================ -->
+<button class="fab" id="fab" onclick="toggleSheet()" aria-label="Novo registro">
+  <i data-lucide="plus"></i>
+</button>
+
+<!-- ============================================================
+     SHEET: NOVO REGISTRO
+     ============================================================ -->
+<div class="sheet-backdrop" id="sheetBackdrop" onclick="closeSheet()"></div>
+
+<div class="sheet" id="sheet">
+  <div class="sheet-handle"></div>
+
+  <!-- ETAPA 1: escolher tipo -->
+  <div id="sheetStep1">
+    <h2 class="sheet-title">Novo registro</h2>
+    <p class="sheet-sub">O que você quer registrar?</p>
+    <div class="type-grid">
+      <button class="type-btn water" onclick="openForm('water')">
+        <div class="type-icon"><i data-lucide="droplets"></i></div>
+        <div class="type-label">Água</div>
+        <div class="type-desc">Consumo de líquido</div>
+      </button>
+      <button class="type-btn pee" onclick="openForm('pee')">
+        <div class="type-icon"><i data-lucide="toilet"></i></div>
+        <div class="type-label">Xixi</div>
+        <div class="type-desc">Episódio urinário</div>
+      </button>
+      <button class="type-btn poop" onclick="openForm('poop')">
+        <div class="type-icon"><i data-lucide="circle-dot"></i></div>
+        <div class="type-label">Intestino</div>
+        <div class="type-desc">Evacuação</div>
+      </button>
+      <button class="type-btn behavior" onclick="openForm('behavior')">
+        <div class="type-icon"><i data-lucide="alert-circle"></i></div>
+        <div class="type-label">Comportamento</div>
+        <div class="type-desc">Intervenção aplicada</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- ETAPA 2: formulário dinâmico -->
+  <div id="sheetStep2" style="display:none;">
+    <button class="sheet-back" onclick="backToTypes()">
+      <i data-lucide="arrow-left"></i>
+      Voltar
+    </button>
+    <div id="formContent"></div>
+  </div>
+</div>
+
+<!-- ============================================================
+     BOTTOM NAV
+     ============================================================ -->
+<nav class="tabs">
+  <button class="active" data-view="diary">
+    <i data-lucide="notebook-pen"></i>
+    <span>Diário</span>
+  </button>
+  <button data-view="stats">
+    <i data-lucide="bar-chart-3"></i>
+    <span>Estatísticas</span>
+  </button>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   CONFIG
+   ============================================================ */
+const API_BASE = "https://salvar.vercel.app";
+
+/* ============================================================
+   UTILS
+   ============================================================ */
+const $ = (id) => document.getElementById(id);
+
+function refreshIcons() {
+  if (window.lucide) lucide.createIcons();
+}
+
+function toast(msg, icon = "check-circle") {
+  const t = $("toast");
+  t.innerHTML = `<i data-lucide="${icon}"></i><span>${msg}</span>`;
+  refreshIcons();
+  t.classList.add("show");
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove("show"), 1900);
+}
+
+function todayKey() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function nowISO() {
+  return new Date().toISOString();
+}
+
+function formatHM(iso) {
+  const d = new Date(iso);
+  return d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+}
+
+function vibrate(ms = 12) {
+  if (navigator.vibrate) navigator.vibrate(ms);
+}
+
+/* ============================================================
+   NAVEGAÇÃO ENTRE VIEWS
+   ============================================================ */
+function switchTab(view) {
+  document.querySelectorAll("nav.tabs button").forEach(b => {
+    b.classList.toggle("active", b.dataset.view === view);
+  });
+  document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+  $("view-" + view).classList.add("active");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  if (view === "stats") loadStats();
+}
+
+document.querySelectorAll("nav.tabs button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    switchTab(btn.dataset.view);
+    vibrate(8);
+  });
+});
+
+/* ============================================================
+   SHEET (bottom sheet)
+   ============================================================ */
+let currentForm = null;
+
+function toggleSheet() {
+  const sheet = $("sheet");
+  const backdrop = $("sheetBackdrop");
+  const fab = $("fab");
+  const isOpen = sheet.classList.contains("show");
+
+  if (isOpen) {
+    closeSheet();
+  } else {
+    sheet.classList.add("show");
+    backdrop.classList.add("show");
+    fab.classList.add("open");
+    vibrate(10);
+    backToTypes();
+  }
+}
+
+function closeSheet() {
+  $("sheet").classList.remove("show");
+  $("sheetBackdrop").classList.remove("show");
+  $("fab").classList.remove("open");
+  setTimeout(backToTypes, 320);
+}
+
+function openForm(type) {
+  currentForm = type;
+  $("sheetStep1").style.display = "none";
+  $("sheetStep2").style.display = "block";
+  $("formContent").innerHTML = buildForm(type);
+  refreshIcons();
+  vibrate(10);
+}
+
+function backToTypes() {
+  currentForm = null;
+  $("sheetStep1").style.display = "block";
+  $("sheetStep2").style.display = "none";
+  $("formContent").innerHTML = "";
+  refreshIcons();
+}
+
+/* ============================================================
+   FORMULÁRIOS DINÂMICOS
+   ============================================================ */
+function buildForm(type) {
+  if (type === "water") {
+    return `
+      <h2 class="sheet-title">💧 Água</h2>
+      <p class="sheet-sub">Toque para registrar rapidamente</p>
+
+      <div class="quick-grid">
+        <button class="btn-quick" onclick="quickWater(50)">50<small>mL</small></button>
+        <button class="btn-quick" onclick="quickWater(100)">100<small>mL</small></button>
+        <button class="btn-quick" onclick="quickWater(150)">150<small>mL</small></button>
+        <button class="btn-quick" onclick="quickWater(200)">200<small>mL</small></button>
+      </div>
+
+      <div class="field">
+        <label>Motivo</label>
+        <select id="waterReason">
+          <option>Sede</option>
+          <option>Após atividade</option>
+          <option>Calor</option>
+          <option>Refeição</option>
+          <option>Pediu espontaneamente</option>
+          <option>Brincadeira</option>
+          <option>Outro</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Outro valor (mL)</label>
+        <div style="display:flex; gap:8px;">
+          <input type="number" id="waterCustom" placeholder="Ex: 75" inputmode="numeric" style="flex:1;">
+          <button class="btn-primary" style="width:auto; padding:0 20px; margin-top:0;" onclick="customWater()">
+            <i data-lucide="check"></i>
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  if (type === "pee") {
+    return `
+      <h2 class="sheet-title">🚽 Xixi</h2>
+      <p class="sheet-sub">Registre o episódio urinário</p>
+
+      <div class="field">
+        <label>Tamanho</label>
+        <select id="peeSize">
+          <option value="pequeno">Pequeno</option>
+          <option value="medio" selected>Médio</option>
+          <option value="grande">Grande</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Tipo</label>
+        <select id="peeType">
+          <option value="espontaneo">Espontâneo</option>
+          <option value="acidente">Acidente</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Observação</label>
+        <textarea id="peeNote" placeholder="Opcional..."></textarea>
+      </div>
+
+      <button class="btn-primary" onclick="savePee()">
+        <i data-lucide="check"></i>
+        Salvar registro
+      </button>
+    `;
+  }
+
+  if (type === "poop") {
+    return `
+      <h2 class="sheet-title">💩 Intestino</h2>
+      <p class="sheet-sub">Registre a evacuação</p>
+
+      <div class="field">
+        <label>Evacuou?</label>
+        <select id="poopYes">
+          <option value="sim">Sim</option>
+          <option value="nao">Não</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Consistência</label>
+        <select id="poopCons">
+          <option>Muito dura</option>
+          <option>Dura</option>
+          <option selected>Normal</option>
+          <option>Mole</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Dor / esforço (0–3)</label>
+        <input type="number" id="poopPain" min="0" max="3" value="0" inputmode="numeric">
+      </div>
+
+      <div class="field">
+        <label>Observação</label>
+        <textarea id="poopNote" placeholder="Opcional..."></textarea>
+      </div>
+
+      <button class="btn-primary" onclick="savePoop()">
+        <i data-lucide="check"></i>
+        Salvar registro
+      </button>
+    `;
+  }
+
+  if (type === "behavior") {
+    return `
+      <h2 class="sheet-title">🧱 Comportamento</h2>
+      <p class="sheet-sub">Registre a intervenção aplicada</p>
+
+      <div class="field">
+        <label>Comportamento observado</label>
+        <input id="behObs" placeholder="Ex: jogou objeto">
+      </div>
+
+      <div class="field">
+        <label>Regra quebrada</label>
+        <input id="behRule" placeholder="Ex: não jogar objetos">
+      </div>
+
+      <div class="field">
+        <label>Intervenção aplicada</label>
+        <input id="behAction" placeholder="Ex: pausa de 5 min">
+      </div>
+
+      <div class="field">
+        <label>Duração (min)</label>
+        <input type="number" id="behDur" value="5" inputmode="numeric">
+      </div>
+
+      <div class="field">
+        <label>Resultado</label>
+        <input id="behResult" placeholder="Ex: voltou à atividade">
+      </div>
+
+      <button class="btn-primary" onclick="saveBehavior()">
+        <i data-lucide="check"></i>
+        Salvar intervenção
+      </button>
+    `;
+  }
+
+  return "";
+}
+
+/* ============================================================
+   API
+   ============================================================ */
+async function apiPost(path, body) {
+  try {
+    const res = await fetch(API_BASE + path, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body)
+    });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    return await res.json();
+  } catch (err) {
+    console.error("POST erro:", err);
+    toast("Erro ao salvar", "alert-circle");
+    return null;
+  }
+}
+
+async function apiGet(path) {
+  try {
+    const res = await fetch(API_BASE + path);
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    return await res.json();
+  } catch (err) {
+    console.error("GET erro:", err);
+    return null;
+  }
+}
+
+/* ============================================================
+   REGISTROS
+   ============================================================ */
+async function quickWater(ml) {
+  vibrate(15);
+  const reason = $("waterReason") ? $("waterReason").value : "Outro";
+  const result = await apiPost("/water", {
+    amount: ml,
+    reason,
+    timestamp: nowISO(),
+    date: todayKey()
+  });
+  if (result) {
+    toast(`+${ml} mL registrado`, "droplets");
+    closeSheet();
+    loadDiary();
+  }
+}
+
+async function customWater() {
+  const val = parseInt($("waterCustom").value, 10);
+  if (!val || val <= 0) return toast("Informe um valor válido", "alert-circle");
+  await quickWater(val);
+}
+
+async function savePee() {
+  vibrate(15);
+  const result = await apiPost("/pee", {
+    size: $("peeSize").value,
+    type: $("peeType").value,
+    note: $("peeNote").value,
+    timestamp: nowISO(),
+    date: todayKey()
+  });
+  if (result) {
+    toast("Xixi registrado", "toilet");
+    closeSheet();
+    loadDiary();
+  }
+}
+
+async function savePoop() {
+  vibrate(15);
+  const result = await apiPost("/poop", {
+    evacuated: $("poopYes").value === "sim",
+    consistency: $("poopCons").value,
+    pain: parseInt($("poopPain").value, 10) || 0,
+    note: $("poopNote").value,
+    timestamp: nowISO(),
+    date: todayKey()
+  });
+  if (result) {
+    toast("Registro salvo", "check-circle");
+    closeSheet();
+    loadDiary();
+  }
+}
+
+async function saveBehavior() {
+  if (!$("behObs").value.trim()) {
+    vibrate([20, 40, 20]);
+    return toast("Descreva o comportamento", "alert-circle");
+  }
+  vibrate(15);
+  const result = await apiPost("/behavior", {
+    observed: $("behObs").value,
+    rule: $("behRule").value,
+    action: $("behAction").value,
+    duration: parseInt($("behDur").value, 10) || 0,
+    result: $("behResult").value,
+    timestamp: nowISO(),
+    date: todayKey()
+  });
+  if (result) {
+    toast("Intervenção salva", "check-circle");
+    closeSheet();
+    loadDiary();
+  }
+}
+
+/* ============================================================
+   FEED DO DIÁRIO
+   ============================================================ */
+async function loadDiary() {
+  const d = new Date();
+  $("headerSub").textContent = d.toLocaleDateString("pt-BR", {
+    weekday: "long", day: "2-digit", month: "long"
+  });
+
+  const data = await apiGet("/summary?date=" + todayKey());
+  if (!data) {
+    renderFeed({ water: [], pee: [], poop: [], behavior: [] });
+    return;
+  }
+  renderFeed(data);
+}
+
+function renderFeed(data) {
+  // Junta todos os registros com tipo
+  const items = [];
+  (data.water || []).forEach(w => items.push({ type: "water", ts: w.timestamp, data: w }));
+  (data.pee || []).forEach(p => items.push({ type: "pee", ts: p.timestamp, data: p }));
+  (data.poop || []).forEach(p => items.push({ type: "poop", ts: p.timestamp, data: p }));
+  (data.behavior || []).forEach(b => items.push({ type: "behavior", ts: b.timestamp, data: b }));
+
+  // Ordena do mais recente para o mais antigo
+  items.sort((a, b) => new Date(b.ts) - new Date(a.ts));
+
+  $("diaryCount").textContent = items.length === 0
+    ? "0 registros"
+    : items.length === 1 ? "1 registro" : `${items.length} registros`;
+
+  if (items.length === 0) {
+    $("notesFeed").innerHTML = `
+      <div class="empty-state">
+        <div class="icon-wrap">
+          <i data-lucide="sparkles"></i>
+        </div>
+        <h3>Nenhum registro ainda</h3>
+        <p>Toque no <strong>+</strong> para adicionar<br>o primeiro registro do dia.</p>
+      </div>
+    `;
+    refreshIcons();
+    return;
+  }
+
+  $("notesFeed").innerHTML = items.map(item => renderNote(item)).join("");
+  refreshIcons();
+}
+
+function renderNote({ type, ts, data }) {
+  const time = formatHM(ts);
+
+  if (type === "water") {
+    return `
+      <div class="note water">
+        <div class="note-icon"><i data-lucide="droplets"></i></div>
+        <div class="note-body">
+          <div class="note-title">
+            ${data.amount} mL
+            <span class="badge">Água</span>
+          </div>
+          <div class="note-meta">
+            ${data.reason || "—"}
+          </div>
+        </div>
+        <div class="note-time">${time}</div>
+      </div>
+    `;
+  }
+
+  if (type === "pee") {
+    const sizeMap = { pequeno: "Pequeno", medio: "Médio", grande: "Grande" };
+    const typeMap = { espontaneo: "Espontâneo", acidente: "Acidente" };
+    return `
+      <div class="note pee">
+        <div class="note-icon"><i data-lucide="toilet"></i></div>
+        <div class="note-body">
+          <div class="note-title">
+            ${typeMap[data.type] || "Xixi"}
+            <span class="badge">Xixi</span>
+          </div>
+          <div class="note-meta">
+            Tamanho: ${sizeMap[data.size] || data.size}
+            ${data.note ? ` · ${data.note}` : ""}
+          </div>
+        </div>
+        <div class="note-time">${time}</div>
+      </div>
+    `;
+  }
+
+  if (type === "poop") {
+    return `
+      <div class="note poop">
+        <div class="note-icon"><i data-lucide="circle-dot"></i></div>
+        <div class="note-body">
+          <div class="note-title">
+            ${data.evacuated ? "Evacuou" : "Não evacuou"}
+            <span class="badge">Intestino</span>
+          </div>
+          <div class="note-meta">
+            ${data.consistency || ""}
+            ${data.pain > 0 ? ` · Dor ${data.pain}/3` : ""}
+            ${data.note ? ` · ${data.note}` : ""}
+          </div>
+        </div>
+        <div class="note-time">${time}</div>
+      </div>
+    `;
+  }
+
+  if (type === "behavior") {
+    return `
+      <div class="note behavior">
+        <div class="note-icon"><i data-lucide="alert-circle"></i></div>
+        <div class="note-body">
+          <div class="note-title">
+            ${escapeHtml(data.observed || "Comportamento")}
+            <span class="badge">Intervenção</span>
+          </div>
+          <div class="note-meta">
+            ${data.action ? `Ação: ${escapeHtml(data.action)}` : ""}
+            ${data.duration ? ` · ${data.duration} min` : ""}
+            ${data.result ? ` · ${escapeHtml(data.result)}` : ""}
+          </div>
+        </div>
+        <div class="note-time">${time}</div>
+      </div>
+    `;
+  }
+
+  return "";
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  }[c]));
+}
+
+/* ============================================================
+   ESTATÍSTICAS
+   ============================================================ */
+async function loadStats() {
+  const data = await apiGet("/summary?date=" + todayKey());
+  if (!data) {
+    renderStats({ water: [], pee: [], poop: [], behavior: [] });
+    return;
+  }
+  renderStats(data);
+}
+
+function renderStats(data) {
+  const waterTotal = (data.water || []).reduce((s, w) => s + (w.amount || 0), 0);
+  const peeList = data.pee || [];
+  const poopList = data.poop || [];
+  const behList = data.behavior || [];
+
+  $("statWater").innerHTML = waterTotal + '<small>mL</small>';
+  $("statPee").textContent = peeList.length;
+  $("statPoop").textContent = poopList.length;
+  $("statBehavior").textContent = behList.length;
+
+  if (peeList.length >= 2) {
+    const times = peeList.map(p => new Date(p.timestamp).getTime()).sort((a, b) => a - b);
+    let diffs = [];
+    for (let i = 1; i < times.length; i++) diffs.push(times[i] - times[i-1]);
+    const avg = diffs.reduce((a,b)=>a+b,0) / diffs.length;
+    const min = Math.round(avg / 60000);
+    $("statInterval").textContent = `${Math.floor(min/60)}h${(min%60).toString().padStart(2,'0')}`;
+  } else {
+    $("statInterval").textContent = "—";
+  }
+
+  const all = [...(data.water||[]), ...peeList, ...poopList, ...behList]
+    .map(x => new Date(x.timestamp).getTime())
+    .sort((a,b)=>b-a);
+  $("statLast").textContent = all.length ? formatHM(all[0]) : "—";
+
+  renderCharts(data.weekly || {});
+}
+
+function renderCharts(weekly) {
+  const days = ["Seg","Ter","Qua","Qui","Sex","Sáb","Dom"];
+  const water = weekly.water || [0,0,0,0,0,0,0];
+  const pee   = weekly.pee   || [0,0,0,0,0,0,0];
+
+  const maxW = Math.max(...water, 1);
+  const maxP = Math.max(...pee, 1);
+
+  if (water.some(v => v > 0)) {
+    $("chartWater").innerHTML = days.map((d, i) => `
+      <div class="chart-row">
+        <div class="day">${d}</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:${(water[i]/maxW)*100}%"></div>
+        </div>
+        <div class="val">${water[i]} mL</div>
+      </div>
+    `).join("");
+  }
+
+  if (pee.some(v => v > 0)) {
+    $("chartPee").innerHTML = days.map((d, i) => `
+      <div class="chart-row gold">
+        <div class="day">${d}</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:${(pee[i]/maxP)*100}%"></div>
+        </div>
+        <div class="val">${pee[i]}x</div>
+      </div>
+    `).join("");
+  }
+
+  const totalWater = water.reduce((a,b)=>a+b,0);
+  const totalPee = pee.reduce((a,b)=>a+b,0);
+  const rel = [];
+  
+  if (totalWater > 0) {
+    rel.push(`<div class="relation-item info">
+      <i data-lucide="droplets"></i>
+      <div>Média diária de <strong>${Math.round(totalWater/7)} mL</strong> de água</div>
+    </div>`);
+  }
+  if (totalPee > 0) {
+    rel.push(`<div class="relation-item gold">
+      <i data-lucide="toilet"></i>
+      <div>Média de <strong>${(totalPee/7).toFixed(1)} xixis</strong> por dia</div>
+    </div>`);
+  }
+  if (totalWater && totalPee) {
+    rel.push(`<div class="relation-item">
+      <i data-lucide="link"></i>
+      <div>Relação água/xixi: <strong>${Math.round(totalWater/totalPee)} mL</strong> por episódio</div>
+    </div>`);
+  }
+
+  if (rel.length) {
+    $("relations").innerHTML = rel.join("");
+    refreshIcons();
+  }
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+refreshIcons();
+loadDiary();
+setInterval(() => {
+  if ($("view-diary").classList.contains("active")) loadDiary();
+  if ($("view-stats").classList.contains("active")) loadStats();
+}, 60000);
+</script>
+</body>
+</html>
