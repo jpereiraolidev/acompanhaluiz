@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0a0f">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="icon" type="image/png" href="capa.png">
+  <link rel="apple-touch-icon" href="capa.png">
+  <title>Diário · Perfil</title>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root {
+      --radius: 16px; --radius-sm: 10px; --radius-lg: 24px;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+
+      --primary: #8b5cf6; --primary-light: #a78bfa; --primary-dark: #7c3aed;
+      --primary-glow: rgba(139, 92, 246, 0.25);
+
+      --gold: #f5c542; --success: #22c55e; --warn: #f59e0b;
+      --danger: #ef4444; --info: #38bdf8;
+
+      --accent: #8b5cf6; --accent-light: #a78bfa; --accent-glow: rgba(139,92,246,0.25);
+    }
+    html[data-couple-color="pink"]   { --accent: #ec4899; --accent-light: #f472b6; --accent-glow: rgba(236,72,153,0.25); }
+    html[data-couple-color="purple"] { --accent: #8b5cf6; --accent-light: #a78bfa; --accent-glow: rgba(139,92,246,0.25); }
+    html[data-couple-color="gold"]   { --accent: #f5c542; --accent-light: #facc15; --accent-glow: rgba(245,197,66,0.25); }
+    html[data-couple-color="blue"]   { --accent: #38bdf8; --accent-light: #7dd3fc; --accent-glow: rgba(56,189,248,0.25); }
+    html[data-couple-color="green"]  { --accent: #22c55e; --accent-light: #4ade80; --accent-glow: rgba(34,197,94,0.25); }
+
+    html[data-theme="dark"] {
+      --bg: #0a0a0f; --bg-2: #12121a; --card: #16161f; --card-hover: #1c1c28;
+      --border: #262633; --border-soft: #1f1f2b;
+      --text: #f5f5f7; --text-2: #b8b8c8; --text-3: #6b6b7e;
+      --header-bg: rgba(10,10,15,0.85); --nav-bg: rgba(18,18,26,0.92);
+      --input-bg: #0a0a0f; --backdrop: rgba(0,0,0,0.6);
+    }
+    html[data-theme="light"] {
+      --bg: #f5f5f7; --bg-2: #ebebef; --card: #ffffff; --card-hover: #f0f0f4;
+      --border: #d4d4dc; --border-soft: #e4e4ea;
+      --text: #0f0f14; --text-2: #4a4a58; --text-3: #8a8a98;
+      --header-bg: rgba(245,245,247,0.85); --nav-bg: rgba(255,255,255,0.92);
+      --input-bg: #f0f0f4; --backdrop: rgba(0,0,0,0.35);
+    }
+    html[data-theme="glass"] {
+      --bg: #0b0b14; --bg-2: rgba(255,255,255,0.03); --card: rgba(255,255,255,0.06);
+      --card-hover: rgba(255,255,255,0.10); --border: rgba(255,255,255,0.12);
+      --border-soft: rgba(255,255,255,0.07);
+      --text: #ffffff; --text-2: rgba(255,255,255,0.75); --text-3: rgba(255,255,255,0.45);
+      --header-bg: rgba(11,11,20,0.55); --nav-bg: rgba(20,20,32,0.55);
+      --input-bg: rgba(255,255,255,0.05); --backdrop: rgba(0,0,0,0.5);
+    }
+    html[data-theme="glass"] body::before,
+    html[data-theme="glass"] body::after {
+      content: ''; position: fixed; border-radius: 50%;
+      filter: blur(80px); opacity: 0.55; pointer-events: none; z-index: 0;
+    }
+    html[data-theme="glass"] body::before {
+      width: 420px; height: 420px; top: -120px; left: -120px;
+      background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+      animation: orbFloat 18s ease-in-out infinite;
+    }
+    html[data-theme="glass"] body::after {
+      width: 380px; height: 380px; bottom: -120px; right: -120px;
+      background: radial-gradient(circle, #38bdf8 0%, transparent 70%);
+      animation: orbFloat 22s ease-in-out infinite reverse;
+    }
+    @keyframes orbFloat {
+      0%, 100% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(40px,30px) scale(1.15); }
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; -webkit-font-smoothing: antialiased; }
+    html, body {
+      margin: 0; padding: 0; background: var(--bg); color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+      font-size: 15px; line-height: 1.5; overscroll-behavior-y: none;
+      transition: background 0.4s ease, color 0.4s ease;
+    }
+    body { padding-bottom: calc(84px + var(--safe-bottom)); min-height: 100vh; position: relative; }
+    html[data-theme="dark"] body {
+      background: radial-gradient(ellipse at top, rgba(139,92,246,0.10) 0%, transparent 55%), var(--bg);
+    }
+    html[data-theme="light"] body {
+      background: radial-gradient(ellipse at top, rgba(139,92,246,0.07) 0%, transparent 55%), var(--bg);
+    }
+    html[data-theme="glass"] body { background: var(--bg); }
+    html[data-theme="glass"] main { position: relative; z-index: 1; }
+
+    /* HEADER */
+    header {
+      position: sticky; top: 0; z-index: 50;
+      padding: calc(14px + var(--safe-top)) 16px 12px;
+      background: var(--header-bg);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-soft);
+    }
+    .header-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .brand-icon {
+      width: 38px; height: 38px; border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; box-shadow: 0 4px 14px var(--accent-glow);
+    }
+    .brand-icon svg { width: 20px; height: 20px; stroke: #fff; stroke-width: 2.2; }
+    .brand-text { min-width: 0; }
+    .brand-text h1 {
+      margin: 0; font-size: 16px; font-weight: 700; letter-spacing: -0.02em;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .brand-text p { margin: 0; font-size: 11px; color: var(--text-3); font-weight: 500; }
+    .header-btn {
+      width: 38px; height: 38px; border-radius: 11px;
+      background: var(--card); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all 0.15s; flex-shrink: 0;
+    }
+    .header-btn:active { transform: scale(0.92); background: var(--card-hover); }
+    .header-btn svg { width: 18px; height: 18px; stroke: var(--text-2); stroke-width: 2.2; }
+
+    main { padding: 16px; max-width: 640px; margin: 0 auto; }
+
+    /* ============================================================
+       HERO (avatar + nome)
+       ============================================================ */
+    .profile-hero {
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center; padding: 28px 20px 24px;
+      background: linear-gradient(135deg, rgba(139,92,246,0.12) 0%, rgba(56,189,248,0.08) 100%);
+      border: 1px solid var(--border); border-radius: var(--radius-lg);
+      margin-bottom: 16px;
+      animation: fadeUp 0.35s ease;
+    }
+
+    /* Avatar clicável */
+    .avatar-label {
+      position: relative;
+      cursor: pointer;
+      display: inline-block;
+      margin-bottom: 14px;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .profile-avatar {
+      width: 96px; height: 96px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: 900; font-size: 34px; letter-spacing: -0.03em;
+      box-shadow: 0 12px 32px var(--accent-glow);
+      overflow: hidden;
+      position: relative;
+      transition: transform 0.15s;
+    }
+    .profile-avatar img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .avatar-label:active .profile-avatar { transform: scale(0.95); }
+
+    .avatar-edit-badge {
+      position: absolute;
+      bottom: 0px; right: 0px;
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--card);
+      border: 2px solid var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      pointer-events: none;
+    }
+    .avatar-edit-badge svg {
+      width: 15px; height: 15px;
+      stroke: var(--accent); stroke-width: 2.4;
+    }
+
+    .profile-name {
+      margin: 0 0 4px; font-size: 22px; font-weight: 800; letter-spacing: -0.02em;
+    }
+    .profile-email {
+      margin: 0 0 12px; font-size: 13px; color: var(--text-3);
+      overflow: hidden; text-overflow: ellipsis; max-width: 100%;
+    }
+
+    .profile-actions {
+      display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+    }
+    .profile-actions button {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 14px; border-radius: 100px;
+      border: 1px solid var(--border); background: var(--card);
+      color: var(--text-2); font-family: inherit;
+      font-size: 12.5px; font-weight: 700; cursor: pointer;
+      transition: all 0.15s;
+    }
+    .profile-actions button:active { transform: scale(0.95); }
+    .profile-actions button svg { width: 14px; height: 14px; stroke-width: 2.4; }
+    .profile-actions .danger { color: var(--danger); border-color: rgba(239,68,68,0.3); }
+
+    /* CARD */
+    .card {
+      background: var(--card); border: 1px solid var(--border-soft);
+      border-radius: var(--radius); padding: 16px; margin-bottom: 12px;
+      animation: fadeUp 0.35s ease;
+    }
+    html[data-theme="glass"] .card {
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+    .card-title {
+      display: flex; align-items: center; gap: 8px;
+      margin: 0 0 14px; font-size: 13px; font-weight: 700;
+      color: var(--text-2); text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .card-title svg { width: 16px; height: 16px; stroke: var(--accent-light); stroke-width: 2.2; flex-shrink: 0; }
+
+    /* INFO ROWS */
+    .info-row {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; padding: 12px 0;
+      border-bottom: 1px solid var(--border-soft);
+    }
+    .info-row:last-child { border-bottom: none; }
+    .info-label {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; color: var(--text-3); font-weight: 600;
+    }
+    .info-label svg { width: 15px; height: 15px; stroke: var(--text-3); stroke-width: 2.2; }
+    .info-value {
+      font-size: 14px; color: var(--text); font-weight: 700;
+      text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      max-width: 60%;
+    }
+
+    /* THEME */
+    .theme-picker { display: flex; gap: 8px; }
+    .theme-option {
+      flex: 1; padding: 14px 8px;
+      border-radius: var(--radius-sm);
+      border: 2px solid var(--border); background: var(--card);
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      cursor: pointer; transition: all 0.15s; font-family: inherit;
+      color: var(--text-2); font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .theme-option:active { transform: scale(0.96); }
+    .theme-option.active {
+      border-color: var(--accent); color: var(--accent-light);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+    .theme-preview {
+      width: 40px; height: 40px; border-radius: 10px;
+      border: 1px solid var(--border); position: relative; overflow: hidden;
+    }
+    .theme-preview.dark { background: linear-gradient(135deg, #0a0a0f 0%, #16161f 100%); }
+    .theme-preview.light { background: linear-gradient(135deg, #f5f5f7 0%, #ffffff 100%); }
+    .theme-preview.glass { background: linear-gradient(135deg, #1a1a3e 0%, #2d1b4e 100%); }
+    .theme-preview.glass::after {
+      content: ''; position: absolute;
+      width: 30px; height: 30px;
+      background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+      border-radius: 50%; top: -5px; right: -5px; filter: blur(8px);
+    }
+
+    /* COLOR */
+    .color-picker { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .color-option {
+      width: 48px; height: 48px; border-radius: 50%;
+      border: 3px solid transparent; cursor: pointer;
+      transition: all 0.15s; position: relative;
+    }
+    .color-option:active { transform: scale(0.9); }
+    .color-option.active {
+      border-color: var(--text);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+      transform: scale(1.08);
+    }
+    .color-option[data-color="pink"]   { background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%); }
+    .color-option[data-color="purple"] { background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%); }
+    .color-option[data-color="gold"]   { background: linear-gradient(135deg, #f5c542 0%, #facc15 100%); }
+    .color-option[data-color="blue"]   { background: linear-gradient(135deg, #38bdf8 0%, #7dd3fc 100%); }
+    .color-option[data-color="green"]  { background: linear-gradient(135deg, #22c55e 0%, #4ade80 100%); }
+
+    /* BUTTONS */
+    .btn-primary, .btn-secondary, .btn-danger {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 14px; border-radius: var(--radius-sm);
+      border: none; font-family: inherit; font-size: 14.5px; font-weight: 700;
+      cursor: pointer; transition: all 0.15s ease; letter-spacing: -0.01em;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+      color: #fff; box-shadow: 0 4px 16px var(--accent-glow);
+    }
+    .btn-secondary { background: var(--card); color: var(--text); border: 1px solid var(--border); }
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.12); color: var(--danger);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+    .btn-primary:active, .btn-secondary:active, .btn-danger:active { transform: scale(0.97); }
+    .btn-primary svg, .btn-secondary svg, .btn-danger svg { width: 17px; height: 17px; stroke-width: 2.4; }
+    .btn-primary:disabled, .btn-secondary:disabled, .btn-danger:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-primary .spinner, .btn-secondary .spinner {
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff;
+      border-radius: 50%; animation: spin 0.7s linear infinite;
+    }
+    .btn-secondary .spinner { border-color: var(--border); border-top-color: var(--text); }
+
+    /* BOTTOM NAV */
+    nav.tabs {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+      display: flex; background: var(--nav-bg);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border-soft);
+      padding-bottom: var(--safe-bottom);
+    }
+    nav.tabs button {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; gap: 3px;
+      background: none; border: none; padding: 10px 4px 11px;
+      color: var(--text-3); font-size: 10px; font-weight: 600;
+      font-family: inherit; cursor: pointer; transition: color 0.15s;
+      position: relative; letter-spacing: 0.02em;
+    }
+    nav.tabs button svg { width: 21px; height: 21px; stroke-width: 2; transition: stroke 0.15s, transform 0.15s; }
+    nav.tabs button.active { color: var(--accent-light); }
+    nav.tabs button.active svg { stroke: var(--accent-light); transform: translateY(-1px); }
+    nav.tabs button.active::before {
+      content: ''; position: absolute; top: 0; left: 50%;
+      transform: translateX(-50%); width: 22px; height: 2.5px;
+      background: var(--accent); border-radius: 0 0 4px 4px;
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    /* TOAST */
+    .toast {
+      position: fixed; bottom: calc(96px + var(--safe-bottom));
+      left: 50%; transform: translateX(-50%) translateY(10px);
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+      color: #fff; padding: 11px 18px; border-radius: 100px;
+      font-size: 13px; font-weight: 700;
+      opacity: 0; pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 999;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5), 0 0 20px var(--accent-glow);
+      display: flex; align-items: center; gap: 6px;
+      white-space: nowrap; max-width: calc(100vw - 32px);
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast svg { width: 15px; height: 15px; stroke-width: 2.5; }
+    .toast.error { background: linear-gradient(135deg, var(--danger) 0%, #b91c1c 100%); }
+
+    /* CONFIRM */
+    .confirm-overlay {
+      position: fixed; inset: 0; z-index: 400;
+      background: var(--backdrop); backdrop-filter: blur(8px);
+      display: none; align-items: center; justify-content: center; padding: 20px;
+    }
+    .confirm-overlay.show { display: flex; }
+    .confirm-box {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 24px;
+      max-width: 340px; width: 100%; text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      animation: fadeUp 0.25s ease;
+    }
+    .confirm-box .icon {
+      width: 56px; height: 56px; border-radius: 16px;
+      background: rgba(239, 68, 68, 0.15);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px;
+    }
+    .confirm-box .icon svg { width: 26px; height: 26px; stroke: var(--danger); stroke-width: 2.2; }
+    .confirm-box h3 { margin: 0 0 8px; font-size: 17px; font-weight: 800; letter-spacing: -0.02em; }
+    .confirm-box p { margin: 0 0 20px; font-size: 13.5px; color: var(--text-3); line-height: 1.5; }
+    .confirm-actions { display: flex; gap: 10px; }
+    .confirm-actions button {
+      flex: 1; padding: 13px; border-radius: var(--radius-sm);
+      border: none; font-family: inherit; font-size: 14px; font-weight: 700;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .confirm-actions button:active { transform: scale(0.96); }
+    .confirm-actions .cancel { background: var(--bg-2); color: var(--text-2); border: 1px solid var(--border); }
+    .confirm-actions .danger { background: var(--danger); color: #fff; box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3); }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    .hidden { display: none !important; }
+
+    .loading-screen {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; min-height: 60vh; gap: 14px;
+      color: var(--text-3); font-size: 13px;
+    }
+    .loading-screen .spinner {
+      width: 32px; height: 32px;
+      border: 3px solid var(--border); border-top-color: var(--accent);
+      border-radius: 50%; animation: spin 0.8s linear infinite;
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-top">
+    <div class="brand">
+      <div class="brand-icon"><i data-lucide="user"></i></div>
+      <div class="brand-text">
+        <h1>Perfil</h1>
+        <p>Suas informações</p>
+      </div>
+    </div>
+    <button class="header-btn" onclick="goTo('dashboard.html')" aria-label="Voltar">
+      <i data-lucide="arrow-left"></i>
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <!-- LOADING -->
+  <div id="loadingView" class="loading-screen">
+    <div class="spinner"></div>
+    <div>Carregando perfil...</div>
+  </div>
+
+  <!-- CONTEÚDO -->
+  <div id="contentView" class="hidden">
+
+    <!-- HERO -->
+    <div class="profile-hero">
+
+      <!-- Avatar clicável -->
+      <label for="avatarInput" class="avatar-label" aria-label="Trocar foto de perfil">
+        <div class="profile-avatar" id="avatarBox">
+          <span id="avatarText">?</span>
+          <img id="avatarImg" class="hidden" alt="Foto de perfil">
+        </div>
+        <div class="avatar-edit-badge"><i data-lucide="camera"></i></div>
+      </label>
+      <input type="file" id="avatarInput" accept="image/*" class="hidden">
+
+      <h2 class="profile-name" id="userName">—</h2>
+      <p class="profile-email" id="userEmail">—</p>
+
+      <div class="profile-actions" id="avatarActions" style="display:none;">
+        <button type="button" class="danger" onclick="removeAvatar()">
+          <i data-lucide="trash-2"></i>
+          <span>Remover foto</span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- INFO -->
+    <div class="card">
+      <div class="card-title"><i data-lucide="info"></i> Informações</div>
+      <div class="info-row">
+        <div class="info-label"><i data-lucide="hash"></i> ID</div>
+        <div class="info-value" id="infoId">—</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label"><i data-lucide="calendar"></i> Entrou em</div>
+        <div class="info-value" id="infoCreated">—</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label"><i data-lucide="heart-handshake"></i> Casal</div>
+        <div class="info-value" id="infoCouple">—</div>
+      </div>
+    </div>
+
+    <!-- TEMA -->
+    <div class="card">
+      <div class="card-title"><i data-lucide="palette"></i> Tema</div>
+      <div class="theme-picker">
+        <button class="theme-option" data-theme="dark" onclick="setTheme('dark')">
+          <div class="theme-preview dark"></div>
+          <span>Dark</span>
+        </button>
+        <button class="theme-option" data-theme="light" onclick="setTheme('light')">
+          <div class="theme-preview light"></div>
+          <span>Light</span>
+        </button>
+        <button class="theme-option" data-theme="glass" onclick="setTheme('glass')">
+          <div class="theme-preview glass"></div>
+          <span>Glass</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- COR DO CASAL -->
+    <div id="coupleColorCard" class="card hidden">
+      <div class="card-title"><i data-lucide="droplet"></i> Cor do casal</div>
+      <div class="color-picker">
+        <button class="color-option" data-color="pink"   onclick="setCoupleColor('pink')"></button>
+        <button class="color-option" data-color="purple" onclick="setCoupleColor('purple')"></button>
+        <button class="color-option" data-color="gold"   onclick="setCoupleColor('gold')"></button>
+        <button class="color-option" data-color="blue"   onclick="setCoupleColor('blue')"></button>
+        <button class="color-option" data-color="green"  onclick="setCoupleColor('green')"></button>
+      </div>
+    </div>
+
+    <!-- AÇÕES -->
+    <div class="card">
+      <div class="card-title"><i data-lucide="settings"></i> Ações</div>
+      <button class="btn-secondary" onclick="goTo('casal.html')" style="margin-bottom:8px;">
+        <i data-lucide="heart-handshake"></i>
+        <span>Gerenciar casal</span>
+      </button>
+      <button class="btn-secondary" onclick="openNotifications()" style="margin-bottom:8px;">
+        <i data-lucide="bell"></i>
+        <span>Notificações</span>
+      </button>
+      <button class="btn-secondary" onclick="reloadProfile()" style="margin-bottom:8px;">
+        <i data-lucide="refresh-cw"></i>
+        <span>Recarregar dados</span>
+      </button>
+    </div>
+
+    <!-- SESSÃO -->
+    <div class="card">
+      <div class="card-title"><i data-lucide="log-out"></i> Sessão</div>
+      <button class="btn-secondary" onclick="askLogout()" style="margin-bottom:8px;">
+        <i data-lucide="log-out"></i>
+        <span>Sair da conta</span>
+      </button>
+      <button class="btn-danger" onclick="askLeaveCouple()" id="leaveCoupleBtn">
+        <i data-lucide="user-minus"></i>
+        <span>Sair do casal</span>
+      </button>
+    </div>
+
+    <div style="text-align:center; font-size:11.5px; color:var(--text-3); padding:16px 0;">
+      Diário · v1.0 · feito com 💜
+    </div>
+
+  </div>
+
+</main>
+
+<!-- BOTTOM NAV -->
+<nav class="tabs">
+  <button onclick="goTo('dashboard.html')">
+    <i data-lucide="home"></i>
+    <span>Início</span>
+  </button>
+  <button onclick="goTo('dependente.html')">
+    <i data-lucide="baby"></i>
+    <span>Dependente</span>
+  </button>
+  <button onclick="goTo('casal.html')">
+    <i data-lucide="heart-handshake"></i>
+    <span>Casal</span>
+  </button>
+  <button class="active" onclick="goTo('profile.html')">
+    <i data-lucide="user"></i>
+    <span>Perfil</span>
+  </button>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<!-- CONFIRM LOGOUT -->
+<div class="confirm-overlay" id="logoutOverlay">
+  <div class="confirm-box">
+    <div class="icon" style="background:rgba(139,92,246,0.15);">
+      <i data-lucide="log-out" style="stroke:var(--accent)"></i>
+    </div>
+    <h3>Sair da conta?</h3>
+    <p>Você vai precisar fazer login novamente pra acessar o app.</p>
+    <div class="confirm-actions">
+      <button class="cancel" onclick="closeConfirm('logoutOverlay')">Cancelar</button>
+      <button class="danger" onclick="doLogout()">Sair</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM LEAVE COUPLE -->
+<div class="confirm-overlay" id="leaveOverlay">
+  <div class="confirm-box">
+    <div class="icon"><i data-lucide="user-minus"></i></div>
+    <h3>Sair do casal?</h3>
+    <p>Você vai sair do casal atual. Se você for o último membro, o casal e todos os dados serão apagados.</p>
+    <div class="confirm-actions">
+      <button class="cancel" onclick="closeConfirm('leaveOverlay')">Cancelar</button>
+      <button class="danger" onclick="doLeaveCouple()">Sair do casal</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   CONFIG
+   ============================================================ */
+const API_BASE = "https://luizback-y8qz.vercel.app";
+const TOKEN_KEY = "luiz_token";
+const USER_KEY = "luiz_user";
+const THEME_KEY = "theme";
+const DEP_KEY = "luiz_dependentId";
+const TIMEOUT_MS = 15000;
+
+/* ============================================================
+   UTILS
+   ============================================================ */
+const $ = (id) => document.getElementById(id);
+const refreshIcons = () => window.lucide && lucide.createIcons();
+
+function log(...args) { console.log("%c[profile]", "color:#8b5cf6;font-weight:bold", ...args); }
+function logErr(...args) { console.error("%c[profile]", "color:#ef4444;font-weight:bold", ...args); }
+
+function toast(msg, type = "success") {
+  const t = $("toast");
+  const icon = type === "error" ? "alert-circle" : "check-circle";
+  t.innerHTML = `<i data-lucide="${icon}"></i><span>${escapeHtml(msg)}</span>`;
+  t.classList.toggle("error", type === "error");
+  refreshIcons();
+  t.classList.add("show");
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove("show"), 3000);
+}
+
+function escapeHtml(s) {
+  return String(s ?? "").replace(/[&<>"']/g, c => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  }[c]));
+}
+
+function vibrate(ms = 10) { if (navigator.vibrate) navigator.vibrate(ms); }
+function goTo(url) { window.location.href = url; }
+
+function initials(name) {
+  return String(name || "?").split(" ").map(s => s[0]).slice(0, 2).join("").toUpperCase();
+}
+
+function formatDate(iso) {
+  if (!iso) return "—";
+  return new Date(iso).toLocaleDateString("pt-BR", {
+    day: "2-digit", month: "short", year: "numeric"
+  });
+}
+
+/**
+ * Redimensiona imagem no client (crop quadrado centralizado).
+ * Devolve data URL em JPEG.
+ */
+function resizeImageToDataURL(file, maxSize = 256, quality = 0.8) {
+  return new Promise((resolve, reject) => {
+    if (!file || !file.type?.startsWith("image/")) {
+      reject(new Error("Arquivo não é uma imagem"));
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const side = Math.min(img.width, img.height);
+        const sx = (img.width - side) / 2;
+        const sy = (img.height - side) / 2;
+        const canvas = document.createElement("canvas");
+        canvas.width = maxSize;
+        canvas.height = maxSize;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, sx, sy, side, side, 0, 0, maxSize, maxSize);
+        try {
+          resolve(canvas.toDataURL("image/jpeg", quality));
+        } catch (err) {
+          reject(err);
+        }
+      };
+      img.onerror = () => reject(new Error("Não consegui carregar a imagem"));
+      img.src = e.target.result;
+    };
+    reader.onerror = () => reject(new Error("Não consegui ler o arquivo"));
+    reader.readAsDataURL(file);
+  });
+}
+
+/* ============================================================
+   TEMA
+   ============================================================ */
+function applyTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  localStorage.setItem(THEME_KEY, theme);
+  const colors = { dark: "#0a0a0f", light: "#f5f5f7", glass: "#0b0b14" };
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute("content", colors[theme] || "#0a0a0f");
+  document.querySelectorAll(".theme-option").forEach(o => {
+    o.classList.toggle("active", o.dataset.theme === theme);
+  });
+}
+
+function setTheme(theme) {
+  applyTheme(theme);
+  vibrate(8);
+  toast(`Tema: ${theme}`);
+}
+
+(function initTheme() {
+  const saved = localStorage.getItem(THEME_KEY) || "dark";
+  applyTheme(saved);
+})();
+
+/* ============================================================
+   API
+   ============================================================ */
+async function apiFetch(path, opts = {}) {
+  const url = API_BASE + path;
+  const headers = { "Content-Type": "application/json", ...(opts.headers || {}) };
+  const token = localStorage.getItem(TOKEN_KEY);
+  if (token && !opts.noAuth) headers.Authorization = `Bearer ${token}`;
+
+  const method = opts.method || "GET";
+  log(`→ ${method} ${path}`, opts.body ? JSON.parse(opts.body) : "");
+
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
+
+  let res;
+  try {
+    res = await fetch(url, { ...opts, headers, signal: ctrl.signal });
+  } catch (netErr) {
+    clearTimeout(timer);
+    logErr("Falha de rede/timeout:", netErr);
+    const err = new Error(
+      netErr.name === "AbortError"
+        ? "O servidor demorou demais pra responder"
+        : "Sem conexão com o servidor"
+    );
+    err.status = 0;
+    throw err;
+  }
+  clearTimeout(timer);
+
+  let data = null;
+  const text = await res.text();
+  if (text) {
+    try { data = JSON.parse(text); }
+    catch { data = { raw: text.slice(0, 500) }; }
+  }
+
+  log(`← ${res.status} ${method} ${path}`, data);
+
+  if (!res.ok) {
+    const err = new Error(
+      data?.error || data?.message ||
+      (res.status === 500 ? "Erro interno do servidor" : `Erro HTTP ${res.status}`)
+    );
+    err.status = res.status;
+    err.data = data;
+    throw err;
+  }
+  return data;
+}
+
+/* ============================================================
+   SESSION
+   ============================================================ */
+function logout() {
+  localStorage.removeItem(TOKEN_KEY);
+  localStorage.removeItem(USER_KEY);
+  localStorage.removeItem(DEP_KEY);
+  window.location.href = "index.html";
+}
+
+/* ============================================================
+   STATE
+   ============================================================ */
+let ME = null;
+
+/* ============================================================
+   INIT
+   ============================================================ */
+async function init() {
+  refreshIcons();
+  log("init — carregando perfil");
+
+  const token = localStorage.getItem(TOKEN_KEY);
+  if (!token) {
+    log("Sem token, indo pro login");
+    window.location.href = "index.html";
+    return;
+  }
+
+  $("loadingView").classList.remove("hidden");
+  $("contentView").classList.add("hidden");
+
+  try {
+    ME = await apiFetch("/auth/me");
+    localStorage.setItem(USER_KEY, JSON.stringify(ME.user));
+    log("ME recebido:", ME);
+  } catch (err) {
+    logErr("Erro em /auth/me:", err, err.data);
+    if (err.status === 401) {
+      toast("Sessão expirada", "error");
+      setTimeout(logout, 800);
+      return;
+    }
+    toast(err.message || "Erro ao carregar perfil", "error");
+    $("loadingView").classList.add("hidden");
+    return;
+  }
+
+  if (ME.couple?.color) {
+    document.documentElement.setAttribute("data-couple-color", ME.couple.color);
+  }
+
+  renderProfile();
+  $("loadingView").classList.add("hidden");
+  $("contentView").classList.remove("hidden");
+  refreshIcons();
+}
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+function renderProfile() {
+  const u = ME.user;
+  const c = ME.couple;
+
+  // Avatar
+  renderAvatarUI();
+
+  // Nome + email
+  $("userName").textContent = u.name;
+  $("userEmail").textContent = u.email;
+
+  // Info rows
+  $("infoId").textContent = (u.id || "").slice(0, 8) + "…";
+  $("infoCreated").textContent = formatDate(u.createdAt);
+
+  if (c) {
+    const partner = c.members.filter(m => m.id !== u.id).map(m => m.name).join(", ");
+    $("infoCouple").textContent = partner ? `Com ${partner}` : "Só você";
+  } else {
+    $("infoCouple").textContent = "Sem casal";
+  }
+
+  // Cor do casal
+  if (c) {
+    $("coupleColorCard").classList.remove("hidden");
+    document.querySelectorAll(".color-option").forEach(o => {
+      o.classList.toggle("active", o.dataset.color === c.color);
+    });
+  } else {
+    $("coupleColorCard").classList.add("hidden");
+    $("leaveCoupleBtn").style.display = "none";
+  }
+
+  // Tema ativo
+  const savedTheme = localStorage.getItem(THEME_KEY) || "dark";
+  document.querySelectorAll(".theme-option").forEach(o => {
+    o.classList.toggle("active", o.dataset.theme === savedTheme);
+  });
+}
+
+function renderAvatarUI() {
+  const u = ME?.user;
+  if (!u) return;
+  const img = $("avatarImg");
+  const txt = $("avatarText");
+  const actions = $("avatarActions");
+
+  if (u.avatar) {
+    img.src = u.avatar;
+    img.classList.remove("hidden");
+    txt.classList.add("hidden");
+    actions.style.display = "flex";
+  } else {
+    img.classList.add("hidden");
+    img.removeAttribute("src");
+    txt.textContent = initials(u.name);
+    txt.classList.remove("hidden");
+    actions.style.display = "none";
+  }
+}
+
+/* ============================================================
+   UPLOAD DE AVATAR
+   ============================================================ */
+$("avatarInput").addEventListener("change", async (e) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+  e.target.value = ""; // permite escolher o mesmo arquivo de novo
+
+  try {
+    toast("Processando foto...");
+    const dataUrl = await resizeImageToDataURL(file);
+    log("dataUrl gerada:", (dataUrl.length / 1024).toFixed(1) + " KB");
+
+    if (dataUrl.length > 700_000) {
+      toast("Foto muito grande, tenta outra", "error");
+      return;
+    }
+
+    // Preview imediato
+    const img = $("avatarImg");
+    img.src = dataUrl;
+    img.classList.remove("hidden");
+    $("avatarText").classList.add("hidden");
+
+    // Envia pro back
+    const res = await apiFetch("/auth/me", {
+      method: "PUT",
+      body: JSON.stringify({ avatar: dataUrl }),
+    });
+
+    ME.user = res.user;
+    localStorage.setItem(USER_KEY, JSON.stringify(ME.user));
+    renderAvatarUI();
+    vibrate(20);
+    toast("Foto atualizada 💜");
+  } catch (err) {
+    logErr("Erro ao subir foto:", err, err.data);
+    // Reverte preview
+    renderAvatarUI();
+    toast(err.message || "Erro ao processar foto", "error");
+  }
+});
+
+async function removeAvatar() {
+  if (!ME?.user) return;
+  try {
+    const res = await apiFetch("/auth/me", {
+      method: "PUT",
+      body: JSON.stringify({ avatar: null }),
+    });
+    ME.user = res.user;
+    localStorage.setItem(USER_KEY, JSON.stringify(ME.user));
+    renderAvatarUI();
+    vibrate(15);
+    toast("Foto removida");
+  } catch (err) {
+    logErr("Erro ao remover foto:", err);
+    toast(err.message || "Erro ao remover", "error");
+  }
+}
+
+/* ============================================================
+   COR DO CASAL
+   ============================================================ */
+async function setCoupleColor(color) {
+  vibrate(10);
+  document.documentElement.setAttribute("data-couple-color", color);
+  document.querySelectorAll(".color-option").forEach(o => {
+    o.classList.toggle("active", o.dataset.color === color);
+  });
+
+  try {
+    await apiFetch("/couple/prefs", {
+      method: "PUT",
+      body: JSON.stringify({ color }),
+    });
+    if (ME.couple) ME.couple.color = color;
+    toast(`Cor: ${color}`);
+  } catch (err) {
+    logErr("Erro ao salvar cor:", err);
+    toast("Erro ao salvar cor", "error");
+  }
+}
+
+/* ============================================================
+   RELOAD
+   ============================================================ */
+function reloadProfile() {
+  vibrate(10);
+  init();
+  toast("Dados recarregados");
+}
+
+/* ============================================================
+   NOTIFICAÇÕES
+   ============================================================ */
+function openNotifications() {
+  toast("Notificações disponíveis no dashboard");
+  setTimeout(() => goTo("dashboard.html"), 800);
+}
+
+/* ============================================================
+   LOGOUT
+   ============================================================ */
+function askLogout() {
+  $("logoutOverlay").classList.add("show");
+  vibrate(10);
+}
+
+function closeConfirm(id) {
+  $(id).classList.remove("show");
+}
+
+function doLogout() {
+  closeConfirm("logoutOverlay");
+  logout();
+}
+
+/* ============================================================
+   SAIR DO CASAL
+   ============================================================ */
+function askLeaveCouple() {
+  $("leaveOverlay").classList.add("show");
+  vibrate(10);
+}
+
+async function doLeaveCouple() {
+  closeConfirm("leaveOverlay");
+  try {
+    await apiFetch("/couple/leave", { method: "DELETE" });
+    toast("Você saiu do casal");
+    setTimeout(() => goTo("dashboard.html"), 900);
+  } catch (err) {
+    logErr("Erro ao sair do casal:", err);
+    toast(err.message || "Erro ao sair", "error");
+  }
+}
+
+/* ============================================================
+   START
+   ============================================================ */
+init();
+</script>
+</body>
+</html>
