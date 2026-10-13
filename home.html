@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a1846">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Cassino Royale · Início</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+<style>
+/* ============================================================
+   RESET E VARIÁVEIS
+   ============================================================ */
+:root {
+  --blue-bg: #050e2a;
+  --blue-bg-2: #0a1846;
+  --blue-header: #0e1f5c;
+  --blue-header-2: #071233;
+  --blue-card: #0f2050;
+  --blue-card-2: #081540;
+  --blue-border: #1a3080;
+  --blue-light: #2a52b8;
+
+  --green-banner: #0f4a1a;
+  --green-banner-2: #052a0d;
+  --green-border: #2a8a2a;
+
+  --gold: #ffd700;
+  --gold-2: #ffb800;
+  --gold-3: #b8860b;
+
+  --yellow: #ffc107;
+  --yellow-2: #ff9800;
+  --yellow-3: #e65100;
+
+  --red: #ff3b30;
+  --red-2: #d4261a;
+  --red-3: #8b0000;
+
+  --text: #ffffff;
+  --text-2: #b8c8e8;
+  --text-3: #6b80b8;
+
+  --success: #22c55e;
+  --danger: #ef4444;
+
+  --radius: 14px;
+  --radius-sm: 10px;
+  --radius-lg: 20px;
+
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+* {
+  margin: 0; padding: 0; box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+}
+
+html, body {
+  height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text);
+  background: linear-gradient(180deg, var(--blue-header-2) 0%, var(--blue-bg-2) 40%, var(--blue-bg) 100%);
+  background-attachment: fixed;
+  line-height: 1.4;
+  min-height: 100vh;
+  padding-bottom: calc(80px + var(--safe-bottom));
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: linear-gradient(180deg, var(--blue-header) 0%, var(--blue-header-2) 100%);
+  border-bottom: 1px solid var(--blue-border);
+}
+
+.top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: calc(10px + var(--safe-top)) 14px 12px;
+}
+
+.logo-97 {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+.logo-97 .num {
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  background: linear-gradient(180deg, #ffffff 0%, #ffd700 50%, #b8860b 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+  line-height: 1;
+}
+
+.logo-97 .text {
+  font-size: 13px;
+  font-weight: 900;
+  background: linear-gradient(180deg, #fff 0%, #ffd700 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.03em;
+  margin-top: 6px;
+}
+
+.menu-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #2a52b8 0%, #0e1f5c 100%);
+  border: 1px solid #4a70d0;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.menu-btn:active { transform: scale(0.92); }
+
+/* ============================================================
+   BALANCE BAR (compacta, abaixo do header)
+   ============================================================ */
+.balance-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: linear-gradient(180deg, #071233 0%, #0a1846 100%);
+  border-bottom: 1px solid var(--blue-border);
+}
+
+.balance-bar .icon {
+  font-size: 18px;
+  filter: drop-shadow(0 2px 4px rgba(255, 215, 0, 0.5));
+}
+
+.balance-bar .value {
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--gold);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+  filter: drop-shadow(0 1px 4px rgba(255, 215, 0, 0.3));
+}
+
+.balance-bar .label {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-left: 4px;
+}
+
+/* ============================================================
+   MAIN
+   ============================================================ */
+main {
+  padding: 12px;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+/* ============================================================
+   BANNER VERDE "BÔNUS"
+   ============================================================ */
+.bonus-banner {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 14px;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.7) 100%),
+    linear-gradient(135deg, var(--green-banner) 0%, var(--green-banner-2) 100%);
+  border: 2px solid var(--gold-2);
+  box-shadow:
+    0 6px 20px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 215, 0, 0.2);
+  padding: 18px 16px 16px;
+  min-height: 140px;
+}
+
+/* Padrão de moedas no fundo */
+.bonus-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 15% 30%, rgba(255, 215, 0, 0.15) 0%, transparent 25%),
+    radial-gradient(circle at 85% 70%, rgba(255, 215, 0, 0.12) 0%, transparent 30%);
+  pointer-events: none;
+}
+
+.bonus-banner-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.bonus-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.bonus-tag {
+  display: inline-block;
+  background: linear-gradient(90deg, #ff3b30 0%, #d4261a 100%);
+  color: #fff;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.bonus-title-big {
+  font-size: 42px;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  background: linear-gradient(180deg, #fff5cc 0%, #ffd700 50%, #ffb800 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.6));
+  margin-bottom: 4px;
+}
+
+.bonus-subtitle {
+  font-size: 11px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 0.02em;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+  line-height: 1.3;
+}
+
+/* Coelho/decoração direita */
+.bonus-right {
+  flex-shrink: 0;
+  width: 100px;
+  height: 100px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bonus-bunny {
+  font-size: 68px;
+  line-height: 1;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+  animation: bunnyFloat 3s ease-in-out infinite;
+}
+
+@keyframes bunnyFloat {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50%      { transform: translateY(-6px) rotate(3deg); }
+}
+
+/* Moeda voando */
+.coin-float {
+  position: absolute;
+  font-size: 24px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+  animation: coinFloat 2.5s ease-in-out infinite;
+}
+
+.coin-float.c1 { top: -8px; right: 4px; animation-delay: 0s; }
+.coin-float.c2 { bottom: -8px; left: 4px; animation-delay: 1.2s; }
+
+@keyframes coinFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-8px) rotate(180deg); }
+}
+
+/* ============================================================
+   CAIXA DE PRESENTE GRANDE (bônus diário)
+   ============================================================ */
+.gift-section {
+  position: relative;
+  margin-bottom: 16px;
+  padding: 20px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 280px;
+}
+
+.gift-box {
+  position: relative;
+  width: 200px;
+  height: 180px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  animation: giftShake 2.5s ease-in-out infinite;
+}
+
+.gift-box:active { transform: scale(0.95); }
+
+.gift-box.opened {
+  animation: none;
+  transform: scale(0);
+  opacity: 0;
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes giftShake {
+  0%, 100% { transform: rotate(-2deg); }
+  50%      { transform: rotate(2deg); }
+}
+
+.gift-body {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(180deg, #e91e63 0%, #ad1457 50%, #880e4f 100%);
+  border-radius: 10px;
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.5),
+    inset 0 2px 0 rgba(255, 255, 255, 0.2);
+  border: 2px solid #f06292;
+}
+
+/* Faixa dourada vertical */
+.gift-body::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 26px;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, #ffd700 0%, #ffb800 50%, #b8860b 100%);
+  box-shadow:
+    inset -3px 0 6px rgba(0, 0, 0, 0.2),
+    inset 3px 0 6px rgba(255, 255, 255, 0.3);
+}
+
+.gift-lid {
+  position: absolute;
+  bottom: 120px;
+  left: -12px;
+  right: -12px;
+  height: 42px;
+  background: linear-gradient(180deg, #f06292 0%, #e91e63 50%, #ad1457 100%);
+  border-radius: 10px 10px 6px 6px;
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.4),
+    inset 0 2px 0 rgba(255, 255, 255, 0.3);
+  border: 2px solid #f8bbd0;
+  z-index: 2;
+}
+
+.gift-lid::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 30px;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, #ffd700 0%, #ffb800 50%, #b8860b 100%);
+  box-shadow:
+    inset -3px 0 6px rgba(0, 0, 0, 0.2),
+    inset 3px 0 6px rgba(255, 255, 255, 0.3);
+}
+
+/* Laço do topo */
+.gift-bow {
+  position: absolute;
+  bottom: 160px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70px;
+  height: 40px;
+  z-index: 3;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
+}
+
+.gift-bow::before,
+.gift-bow::after {
+  content: '';
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  background: radial-gradient(ellipse, #ffe44d 0%, #ffb800 70%, #b8860b 100%);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  top: 0;
+}
+
+.gift-bow::before { left: 0; transform: rotate(-25deg); }
+.gift-bow::after  { right: 0; transform: rotate(25deg); }
+
+.gift-bow-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  background: radial-gradient(circle, #ffe44d 0%, #ffb800 100%);
+  border-radius: 50%;
+  z-index: 4;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* Botão ABRIR */
+.gift-open-btn {
+  margin-top: 20px;
+  width: 100%;
+  max-width: 220px;
+  padding: 16px 24px;
+  background: linear-gradient(180deg, #ffd54f 0%, #ffb800 50%, #e65100 100%);
+  border: none;
+  border-radius: 10px;
+  color: #3a1a00;
+  font-size: 18px;
+  font-weight: 900;
+  font-family: inherit;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow:
+    0 6px 0 #8b3500,
+    0 10px 24px rgba(255, 152, 0, 0.5),
+    inset 0 2px 0 rgba(255, 255, 255, 0.4);
+  transition: all 0.12s;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+  position: relative;
+  z-index: 5;
+}
+
+.gift-open-btn:active {
+  transform: translateY(4px);
+  box-shadow:
+    0 2px 0 #8b3500,
+    0 4px 12px rgba(255, 152, 0, 0.5),
+    inset 0 2px 0 rgba(255, 255, 255, 0.4);
+}
+
+.gift-hint {
+  margin-top: 12px;
+  font-size: 11px;
+  color: var(--text-2);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-align: center;
+  position: relative;
+  z-index: 5;
+}
+
+.gift-hint .gold { color: var(--gold); }
+
+/* ============================================================
+   JACKPOT COUNTER
+   ============================================================ */
+.jackpot-counter {
+  background: linear-gradient(180deg, #0f2050 0%, #081540 100%);
+  border: 2px solid var(--blue-border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.jackpot-counter::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -20%;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.jackpot-label {
+  font-size: 10px;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-weight: 900;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.jackpot-label i {
+  font-size: 12px;
+  filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.6));
+  animation: crownPulse 2s ease-in-out infinite;
+}
+
+@keyframes crownPulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.15); }
+}
+
+.jackpot-value {
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  background: linear-gradient(180deg, #ffffff 0%, #ffd700 40%, #ffb800 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-variant-numeric: tabular-nums;
+  filter: drop-shadow(0 3px 10px rgba(255, 215, 0, 0.4));
+}
+
+.jackpot-sub {
+  font-size: 10px;
+  color: var(--text-3);
+  font-weight: 700;
+  margin-top: 4px;
+  letter-spacing: 0.05em;
+}
+
+/* ============================================================
+   PROMO CARDS (grid de 2)
+   ============================================================ */
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0 12px;
+  padding: 0 4px;
+}
+
+.section-title i {
+  color: var(--gold);
+  font-size: 14px;
+}
+
+.section-title h3 {
+  font-size: 13px;
+  font-weight: 900;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.section-title .line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--blue-border), transparent);
+}
+
+.promo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.promo-card {
+  position: relative;
+  background: linear-gradient(135deg, #0f4a1a 0%, #052a0d 100%);
+  border: 1.5px solid var(--gold-2);
+  border-radius: var(--radius);
+  padding: 12px 12px 14px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.15s;
+  font-family: inherit;
+  text-align: left;
+  color: inherit;
+}
+
+.promo-card:active { transform: scale(0.97); }
+
+.promo-card::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 60px;
+  height: 60px;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.2) 0%, transparent 70%);
+  border-radius: 50%;
+  transform: translate(30%, -30%);
+  pointer-events: none;
+}
+
+.promo-card .icon-bg {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  font-size: 44px;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.promo-card .tag {
+  display: inline-block;
+  background: linear-gradient(90deg, #ff3b30 0%, #d4261a 100%);
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.promo-card .title {
+  font-size: 12px;
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1.2;
+  margin-bottom: 4px;
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.promo-card .sub {
+  font-size: 9.5px;
+  color: #b8d8b8;
+  font-weight: 700;
+  line-height: 1.35;
+  position: relative;
+  z-index: 1;
+}
+
+.promo-card .sub strong {
+  color: var(--gold);
+  font-weight: 900;
+}
+
+/* ============================================================
+   BOTTOM NAV
+   ============================================================ */
+.bottom-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 100;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.15fr 1fr 1fr;
+  align-items: end;
+  background: linear-gradient(180deg, #071233 0%, #050e2a 100%);
+  border-top: 1px solid var(--blue-border);
+  padding: 8px 4px calc(8px + var(--safe-bottom));
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.nav-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 8px 4px;
+  background: none;
+  border: none;
+  color: var(--text-3);
+  font-size: 9.5px;
+  font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.02em;
+  position: relative;
+}
+
+.nav-btn i {
+  font-size: 20px;
+}
+
+.nav-btn:active { transform: scale(0.92); }
+
+.nav-btn.active {
+  color: var(--yellow);
+}
+
+.nav-btn.active i {
+  filter: drop-shadow(0 0 8px rgba(255, 193, 7, 0.7));
+}
+
+/* Botão central (chama vermelha) */
+.nav-btn.center-btn {
+  position: relative;
+  top: -22px;
+}
+
+.nav-btn.center-btn .center-circle {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 25%, #ff9d3a 0%, #ff5a1a 35%, #c41e0a 70%, #8b0000 100%);
+  border: 4px solid #0a1846;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  box-shadow:
+    0 6px 24px rgba(255, 90, 26, 0.6),
+    0 0 0 3px rgba(255, 152, 0, 0.3),
+    inset 0 3px 8px rgba(255, 255, 255, 0.3);
+  transition: all 0.15s;
+  margin-bottom: 2px;
+  animation: flamePulse 1.8s ease-in-out infinite;
+}
+
+@keyframes flamePulse {
+  0%, 100% {
+    box-shadow:
+      0 6px 24px rgba(255, 90, 26, 0.6),
+      0 0 0 3px rgba(255, 152, 0, 0.3),
+      inset 0 3px 8px rgba(255, 255, 255, 0.3);
+  }
+  50% {
+    box-shadow:
+      0 6px 32px rgba(255, 90, 26, 0.9),
+      0 0 0 6px rgba(255, 152, 0, 0.4),
+      inset 0 3px 8px rgba(255, 255, 255, 0.3);
+  }
+}
+
+.nav-btn.center-btn:active .center-circle {
+  transform: scale(0.92);
+}
+
+.nav-btn.center-btn span {
+  color: var(--text-3);
+}
+
+.nav-btn.center-btn.active span {
+  color: var(--yellow);
+}
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+.toast {
+  position: fixed;
+  bottom: calc(105px + var(--safe-bottom));
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-3) 100%);
+  color: #0a1a3a;
+  padding: 12px 22px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 800;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 1000;
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.5),
+    0 0 30px rgba(255, 215, 0, 0.4);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  max-width: calc(100vw - 32px);
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.toast.error {
+  background: linear-gradient(135deg, var(--red) 0%, var(--red-3) 100%);
+  color: #fff;
+}
+
+.toast i { font-size: 15px; }
+
+/* ============================================================
+   MODAL DE PRÊMIO (após abrir a caixa)
+   ============================================================ */
+.reward-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.reward-modal.show {
+  display: flex;
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.reward-box {
+  width: 100%;
+  max-width: 340px;
+  background: linear-gradient(180deg, #0e1f5c 0%, #050e2a 100%);
+  border: 2px solid var(--gold);
+  border-radius: var(--radius-lg);
+  padding: 28px 22px 22px;
+  text-align: center;
+  position: relative;
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.9),
+    0 0 0 4px rgba(255, 215, 0, 0.15),
+    0 0 80px rgba(255, 215, 0, 0.4);
+  animation: modalPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes modalPop {
+  from { transform: scale(0.6) rotate(-8deg); opacity: 0; }
+  to   { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+.reward-box h2 {
+  font-size: 22px;
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 6px;
+  letter-spacing: -0.02em;
+}
+
+.reward-box .sub {
+  font-size: 13px;
+  color: var(--text-2);
+  font-weight: 600;
+  margin-bottom: 16px;
+  line-height: 1.4;
+}
+
+.reward-amount {
+  font-size: 46px;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  background: linear-gradient(180deg, #fff5cc 0%, #ffd700 50%, #b8860b 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 8px 0 20px;
+  font-variant-numeric: tabular-nums;
+  filter: drop-shadow(0 4px 12px rgba(255, 215, 0, 0.5));
+  animation: amountPulse 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes amountPulse {
+  from { transform: scale(1); }
+  to   { transform: scale(1.06); }
+}
+
+.reward-btn {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(180deg, #ffd54f 0%, #ffb800 50%, #e65100 100%);
+  border: none;
+  border-radius: 12px;
+  color: #3a1a00;
+  font-size: 15px;
+  font-weight: 900;
+  font-family: inherit;
+  cursor: pointer;
+  letter-spacing: 0.08em;
+  box-shadow:
+    0 5px 0 #8b3500,
+    0 8px 20px rgba(255, 152, 0, 0.4);
+  transition: all 0.12s;
+  text-transform: uppercase;
+}
+
+.reward-btn:active {
+  transform: translateY(3px);
+  box-shadow:
+    0 2px 0 #8b3500,
+    0 4px 12px rgba(255, 152, 0, 0.4);
+}
+
+/* ============================================================
+   RESPONSIVO
+   ============================================================ */
+@media (max-width: 380px) {
+  .bonus-title-big { font-size: 36px; }
+  .bonus-bunny { font-size: 56px; }
+  .bonus-right { width: 80px; height: 80px; }
+  .jackpot-value { font-size: 26px; }
+  .gift-box { width: 170px; height: 160px; }
+  .promo-card .title { font-size: 11px; }
+  .nav-btn.center-btn .center-circle { width: 60px; height: 60px; font-size: 26px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header>
+  <div class="top-row">
+    <div class="logo-97">
+      <span class="num">97</span>
+      <span class="text">.com</span>
+    </div>
+    <button class="menu-btn" onclick="openMenu()" aria-label="Menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </div>
+
+  <div class="balance-bar">
+    <span class="icon">🪙</span>
+    <span class="value" id="balanceValue">0</span>
+    <span class="label">L$</span>
+  </div>
+</header>
+
+<!-- ============================================================
+     MAIN
+     ============================================================ -->
+<main>
+
+  <!-- Banner verde BÔNUS -->
+  <div class="bonus-banner">
+    <div class="bonus-banner-content">
+      <div class="bonus-left">
+        <div class="bonus-tag">30% SEMANAL + 55%</div>
+        <div class="bonus-title-big">BÔNUS</div>
+        <div class="bonus-subtitle">LOGIN DIÁRIO, BÔNUS ALEATÓRIO</div>
+      </div>
+      <div class="bonus-right">
+        <div class="bonus-bunny">🐰</div>
+        <span class="coin-float c1">🪙</span>
+        <span class="coin-float c2">🪙</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Caixa de presente grande -->
+  <div class="gift-section">
+    <div class="gift-box" id="giftBox" onclick="openGift()">
+      <div class="gift-body"></div>
+      <div class="gift-lid"></div>
+      <div class="gift-bow">
+        <div class="gift-bow-center"></div>
+      </div>
+    </div>
+
+    <button class="gift-open-btn" id="giftBtn" onclick="openGift()">
+      ABRIR
+    </button>
+
+    <div class="gift-hint" id="giftHint">
+      Toque para abrir seu <span class="gold">bônus diário</span>
+    </div>
+  </div>
+
+  <!-- Jackpot counter -->
+  <div class="jackpot-counter">
+    <div class="jackpot-label">
+      <i class="fa-solid fa-crown"></i>
+      Jackpot Acumulado
+    </div>
+    <div class="jackpot-value" id="jackpotValue">9.023.298,93</div>
+    <div class="jackpot-sub">Cresce a cada giro da comunidade</div>
+  </div>
+
+  <!-- Promo cards -->
+  <div class="section-title">
+    <i class="fa-solid fa-fire"></i>
+    <h3>Promoções</h3>
+    <div class="line"></div>
+  </div>
+
+  <div class="promo-grid">
+    <button class="promo-card" onclick="promoClick('convite')">
+      <span class="tag">Convide</span>
+      <div class="title">GANHE L$ 50</div>
+      <div class="sub">Convide 1 pessoa e <strong>ganhe L$ 50</strong> por indicação</div>
+      <span class="icon-bg">🤝</span>
+    </button>
+
+    <button class="promo-card" onclick="promoClick('diario')">
+      <span class="tag">Check-in</span>
+      <div class="title">L$ 300</div>
+      <div class="sub">Faça login por <strong>7 dias seguidos</strong> e ganhe bônus</div>
+      <span class="icon-bg">📅</span>
+    </button>
+
+    <button class="promo-card" onclick="promoClick('comissao')">
+      <span class="tag">Comissão</span>
+      <div class="title">GANHE 30%</div>
+      <div class="sub">Comissão diária sobre <strong>cada indicado ativo</strong></div>
+      <span class="icon-bg">💰</span>
+    </button>
+
+    <button class="promo-card" onclick="promoClick('misteriosa')">
+      <span class="tag">Mistério</span>
+      <div class="title">L$ 7.777</div>
+      <div class="sub">Mina misteriosa com <strong>prêmio acumulado</strong></div>
+      <span class="icon-bg">💎</span>
+    </button>
+  </div>
+
+</main>
+
+<!-- ============================================================
+     BOTTOM NAV
+     ============================================================ -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" data-tab="inicio">
+    <i class="fa-solid fa-house"></i>
+    <span>Início</span>
+  </button>
+  <button class="nav-btn" data-tab="promocao">
+    <i class="fa-solid fa-gift"></i>
+    <span>Promoção</span>
+  </button>
+  <button class="nav-btn center-btn" onclick="playNow()">
+    <div class="center-circle">🔥</div>
+  </button>
+  <button class="nav-btn" data-tab="deposito">
+    <i class="fa-solid fa-wallet"></i>
+    <span>Depósito</span>
+  </button>
+  <button class="nav-btn" data-tab="perfil" onclick="goPerfil()">
+    <i class="fa-solid fa-user"></i>
+    <span>Perfil</span>
+  </button>
+</nav>
+
+<!-- ============================================================
+     MODAL DE PRÊMIO (após abrir caixa)
+     ============================================================ -->
+<div class="reward-modal" id="rewardModal">
+  <div class="reward-box">
+    <h2>🎉 Parabéns!</h2>
+    <div class="sub">Você ganhou o bônus de hoje</div>
+    <div class="reward-amount" id="rewardAmount">+L$ 500</div>
+    <button class="reward-btn" onclick="claimReward()">Receber</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   CONFIG
+   ============================================================ */
+const STORAGE_USERS = "cassino_users_v1";
+const STORAGE_SESSION = "cassino_session_v1";
+const STORAGE_JACKPOT = "cassino_jackpot_v1";
+
+const DAILY_BONUS_MIN = 300;
+const DAILY_BONUS_MAX = 1500;
+
+let currentUser = null;
+let pendingReward = 0;
+
+/* ============================================================
+   UTILS
+   ============================================================ */
+const $ = (id) => document.getElementById(id);
+
+function formatNum(n) {
+  return Number(n || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function vibrate(ms = 12) {
+  if (navigator.vibrate) navigator.vibrate(ms);
+}
+
+function toast(msg, type = "success") {
+  const el = $("toast");
+  const icon = type === "error" ? "fa-circle-exclamation" : "fa-circle-check";
+  el.innerHTML = `<i class="fa-solid ${icon}"></i><span>${msg}</span>`;
+  el.className = "toast show" + (type === "error" ? " error" : "");
+  clearTimeout(el._timer);
+  el._timer = setTimeout(() => el.classList.remove("show"), 2600);
+}
+
+function todayKey() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+/* ============================================================
+   STORAGE
+   ============================================================ */
+function getUsers() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_USERS)) || []; }
+  catch { return []; }
+}
+
+function saveUsers(users) {
+  localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
+}
+
+function getSession() {
+  return localStorage.getItem(STORAGE_SESSION);
+}
+
+function clearSession() {
+  localStorage.removeItem(STORAGE_SESSION);
+}
+
+function updateCurrentUser(updates) {
+  const users = getUsers();
+  const idx = users.findIndex(u => u.id === currentUser.id);
+  if (idx >= 0) {
+    users[idx] = { ...users[idx], ...updates };
+    saveUsers(users);
+    currentUser = users[idx];
+  }
+}
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+function renderBalance() {
+  const el = $("balanceValue");
+  el.textContent = formatNum(currentUser.coins || 0);
+}
+
+function renderGiftState() {
+  const today = todayKey();
+  const lastClaim = currentUser.dailyBonus?.lastClaim;
+  const claimed = lastClaim === today;
+
+  const box = $("giftBox");
+  const btn = $("giftBtn");
+  const hint = $("giftHint");
+
+  if (claimed) {
+    box.style.display = "none";
+    btn.disabled = true;
+    btn.textContent = "VOLTE AMANHÃ";
+    btn.style.background = "linear-gradient(180deg, #4a4a4a 0%, #2a2a2a 100%)";
+    btn.style.boxShadow = "0 4px 0 #111, 0 6px 16px rgba(0,0,0,0.5)";
+    btn.style.color = "rgba(255,255,255,0.5)";
+    btn.style.cursor = "not-allowed";
+    hint.innerHTML = 'Você já resgatou hoje. <span class="gold">Volte amanhã!</span>';
+  }
+}
+
+/* ============================================================
+   JACKPOT — contador animado
+   ============================================================ */
+let jackpotValue = 9023298.93;
+
+function initJackpot() {
+  const saved = localStorage.getItem(STORAGE_JACKPOT);
+  if (saved) {
+    jackpotValue = Number(saved);
+  }
+  renderJackpot();
+
+  // Aumenta sozinho (simula atividade da comunidade)
+  setInterval(() => {
+    if (Math.random() < 0.25) {
+      jackpotValue += Math.random() * 200 + 50;
+      localStorage.setItem(STORAGE_JACKPOT, jackpotValue);
+      renderJackpot();
+    }
+  }, 2500);
+}
+
+function renderJackpot() {
+  const el = $("jackpotValue");
+  if (el) el.textContent = formatNum(jackpotValue);
+}
+
+/* ============================================================
+   ABRIR CAIXA DE PRESENTE (BÔNUS DIÁRIO)
+   ============================================================ */
+function openGift() {
+  const today = todayKey();
+  const lastClaim = currentUser.dailyBonus?.lastClaim;
+
+  if (lastClaim === today) {
+    toast("Você já pegou o bônus de hoje", "error");
+    return;
+  }
+
+  vibrate([50, 30, 50, 30, 100]);
+
+  // Anima a caixa
+  const box = $("giftBox");
+  box.classList.add("opened");
+
+  // Sorteia valor do bônus
+  pendingReward = Math.floor(
+    Math.random() * (DAILY_BONUS_MAX - DAILY_BONUS_MIN) + DAILY_BONUS_MIN
+  );
+
+  // Mostra o modal depois da animação
+  setTimeout(() => {
+    $("rewardAmount").textContent = "+L$ " + formatNum(pendingReward);
+    $("rewardModal").classList.add("show");
+    soltarConfetes();
+  }, 400);
+}
+
+function claimReward() {
+  // Adiciona moedas
+  updateCurrentUser({
+    coins: (currentUser.coins || 0) + pendingReward,
+    dailyBonus: {
+      lastClaim: todayKey(),
+      streak: (currentUser.dailyBonus?.streak || 0) + 1,
+    },
+  });
+
+  renderBalance();
+
+  // Fecha modal
+  $("rewardModal").classList.remove("show");
+
+  // Atualiza caixa pra "já pego"
+  setTimeout(() => {
+    renderGiftState();
+  }, 300);
+
+  vibrate([80, 40, 80, 40, 150]);
+  toast(`🎁 +L$ ${formatNum(pendingReward)} de bônus!`);
+
+  // Registra no histórico
+  try {
+    const hist = JSON.parse(localStorage.getItem("cassino_history_v1")) || [];
+    hist.unshift({ type: "bonus", value: pendingReward, ts: Date.now() });
+    localStorage.setItem("cassino_history_v1", JSON.stringify(hist.slice(0, 50)));
+  } catch {}
+
+  pendingReward = 0;
+}
+
+/* ============================================================
+   CONFETES
+   ============================================================ */
+function soltarConfetes() {
+  if (typeof confetti !== "function") return;
+  const cores = ["#ffd700", "#ffb800", "#ff9800", "#22c55e", "#38bdf8"];
+
+  confetti({
+    particleCount: 120,
+    spread: 100,
+    origin: { y: 0.5 },
+    colors: cores,
+    scalar: 1.2,
+  });
+
+  setTimeout(() => {
+    confetti({ particleCount: 60, angle: 60,  spread: 70, origin: { x: 0, y: 0.6 }, colors: cores });
+    confetti({ particleCount: 60, angle: 120, spread: 70, origin: { x: 1, y: 0.6 }, colors: cores });
+  }, 200);
+
+  setTimeout(() => {
+    confetti({ particleCount: 80, spread: 160, origin: { y: 0 }, gravity: 0.9, colors: cores });
+  }, 500);
+}
+
+/* ============================================================
+   AÇÕES
+   ============================================================ */
+function openMenu() {
+  vibrate(10);
+  toast("Menu em breve 🚧");
+}
+
+function promoClick(tipo) {
+  vibrate(10);
+  const msgs = {
+    convite: "🤝 Convide um amigo e ganhe L$ 50!",
+    diario: "📅 Faça login por 7 dias e ganhe L$ 300!",
+    comissao: "💰 Ganhe 30% de comissão por indicação!",
+    misteriosa: "💎 Mina misteriosa com prêmio acumulado!",
+  };
+  toast(msgs[tipo] || "Em breve!");
+}
+
+function playNow() {
+  vibrate(15);
+  // Vai pro tigrinho direto
+  window.location.href = "tigrinho.html";
+}
+
+function goPerfil() {
+  vibrate(10);
+  window.location.href = "profile.html";
+}
+
+function logout() {
+  if (!confirm("Sair da conta?")) return;
+  clearSession();
+  vibrate([60, 30, 60]);
+  setTimeout(() => window.location.href = "index.html", 200);
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+(function init() {
+  // Verifica sessão
+  const sessionId = getSession();
+  if (!sessionId) {
+    window.location.replace("index.html");
+    return;
+  }
+
+  const users = getUsers();
+  const user = users.find(u => u.id === sessionId);
+
+  if (!user) {
+    clearSession();
+    window.location.replace("index.html");
+    return;
+  }
+
+  currentUser = user;
+
+  // Garante campos que podem não existir
+  if (!currentUser.dailyBonus) currentUser.dailyBonus = { lastClaim: null, streak: 0 };
+  if (!currentUser.unlockedGames) currentUser.unlockedGames = [];
+
+  // Renderiza
+  renderBalance();
+  renderGiftState();
+  initJackpot();
+
+  // Bind tecla ESC pra fechar modal
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      $("rewardModal").classList.remove("show");
+    }
+  });
+
+  console.log(
+    "%c🎰 Cassino Royale · Home",
+    "color:#ffd700;font-size:16px;font-weight:900;"
+  );
+  console.log("Usuário:", currentUser.username, "| L$:", currentUser.coins);
+})();
+</script>
+</body>
+</html>
